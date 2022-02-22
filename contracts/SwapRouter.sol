@@ -100,7 +100,7 @@ interface IOneInchRouter {
     returns (uint256 returnAmount, uint256 gasLeft);
 }
 
-contract Test {
+contract SwapRouter {
 
     address paraswapRouter;
     address airswapLight;
@@ -116,40 +116,80 @@ contract Test {
         oneInchRouter = address(0x1111111254fb6c44bAC0beD2854e76F90643097d);
     }
 
+    receive() external payable {}
+
     function swap(string memory aggregatorId, address tokenFrom, uint256 amount, bytes memory data) public payable {
 
+        bytes4 fName;
+        uint256 position;
+
+        assembly {
+            fName := mload(add(data, 0x4))
+        }
+
+        IERC20(tokenFrom).transferFrom(msg.sender, address(this), amount);
+        if(fName == 0x5f575529) {
+            position = 512;
+        }
+
         if(keccak256(abi.encodePacked((aggregatorId))) == keccak256(abi.encodePacked(("0xFeeDynamic")))){
+            if(tokenFrom != address(0)){
+                if(IERC20(tokenFrom).allowance(address(this), zeroExRouter) == 0){
+                    IERC20(tokenFrom).approve(zeroExRouter, type(uint256).max);
+                }
+            }
             bytes memory exSwapData;
             assembly {
                 exSwapData := mload(add(data, 0x0))
-                let cc := add(data, 0x120)
+                let cc := add(data, add(0x120, position))
                 exSwapData := add(cc, 0x0)
             }
             zeroExRouter.call(exSwapData);
         }
         else if (keccak256(abi.encodePacked((aggregatorId))) == keccak256(abi.encodePacked(("oneInchV4FeeDynamic")))){
+            if(tokenFrom != address(0)){
+                if(IERC20(tokenFrom).allowance(address(this), oneInchRouter) == 0){
+                    IERC20(tokenFrom).approve(oneInchRouter, type(uint256).max);
+                }
+            }
             bytes memory oneInchData;
             assembly {
                 oneInchData := mload(add(data, 0x0))
-                let cc := add(data, 0x120)
+                let cc := add(data, add(0x120, position))
                 oneInchData := add(cc, 0x0)
             }
             (address _caller, IOneInchRouter.SwapDescription memory desc, bytes memory _data) = parseOneInchData(oneInchData);
             IOneInchRouter(oneInchRouter).swap(_caller, desc, _data);
         }
         else if (keccak256(abi.encodePacked((aggregatorId))) == keccak256(abi.encodePacked(("pmmFeeDynamic")))){
+            if(tokenFrom != address(0)){
+                if(IERC20(tokenFrom).allowance(address(this), pmmRouter) == 0){
+                    IERC20(tokenFrom).approve(pmmRouter, type(uint256).max);
+                }
+            }
             bytes memory pmmData;
             uint256 takerAssetFillAmount;
             assembly {
                 pmmData := mload(add(data, 0x0))
-                let cc := add(data, 0x180)
+                let cc := add(data, add(0x180, position))
                 pmmData := add(cc, 0x0)
-                takerAssetFillAmount := mload(add(data, 0x60)) 
+                takerAssetFillAmount := mload(add(data, add(0x60, position))) 
             }        
             (IPmmRouter.Order memory order, bytes memory signature) = parsePmmData(pmmData);
             IPmmRouter(pmmRouter).fillOrder(order, takerAssetFillAmount, signature);
         }
         else if (keccak256(abi.encodePacked((aggregatorId))) == keccak256(abi.encodePacked(("airswapLightFeeDynamic")))){
+            if(tokenFrom != address(0)){
+                if(IERC20(tokenFrom).allowance(address(this), airswapLight) == 0){
+                    IERC20(tokenFrom).approve(airswapLight, type(uint256).max);
+                }
+            }
+            bytes memory airswapData;
+            assembly {
+                airswapData := mload(add(data, 0x0))
+                let cc := add(data, add(0x0, position))
+                airswapData := add(cc, 0x0)
+            }
             (
                 uint256 nonce,
                 uint256 expiry,
@@ -161,7 +201,7 @@ contract Test {
                 uint8 v,
                 bytes32 r,
                 bytes32 s
-            ) = parseAirSwapData(data);
+            ) = parseAirSwapData(airswapData);
             IAirSwapLight(airswapLight).swap(
                 nonce,
                 expiry,
@@ -176,10 +216,15 @@ contract Test {
             );
         }
         else if (keccak256(abi.encodePacked((aggregatorId))) == keccak256(abi.encodePacked(("paraswapV5FeeDynamic")))){
+            if(tokenFrom != address(0)){
+                if(IERC20(tokenFrom).allowance(address(this), paraswapRouter) == 0){
+                    IERC20(tokenFrom).approve(paraswapRouter, type(uint256).max);
+                }
+            }
             bytes memory paraswapData;
             assembly {
                 paraswapData := mload(add(data, 0x0))
-                let cc := add(data, 0x120)
+                let cc := add(data, add(0x120, position))
                 paraswapData := add(cc, 0x0)
             }
             IParaswapRouter.SimpleData memory simpleData = parseParaswapData(paraswapData);
