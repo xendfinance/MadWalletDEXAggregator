@@ -1,23 +1,50 @@
+// const { BN, ether, balance } = require('openzeppelin-test-helpers');
+// const { expect } = require('chai');
+// const ForceSend = artifacts.require('ForceSend');
+const {fetch} = require('cross-fetch');
+const Test = artifacts.require("TestSwap");
+const CallTest = artifacts.require("CallTest");
 const SwapRouter = artifacts.require("SwapRouter");
-const tokenOwner = '0xdF0b2157199eeE76489D990160d38d16d71F1A04';
-const daiABI = require('./abi/dai');
-const daiAddress = "0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3";
-const daiContract = new web3.eth.Contract(daiABI, daiAddress);
+const tokenOwner = '0x0B25a50F0081c177554e919EeFf192Cfe9EfDe15';
+const busdABI = require('./abi/busd');
+const busdAddress = "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56";
+const busdContract = new web3.eth.Contract(busdABI, busdAddress);
 
-const ethABI = require('./abi/eth');
-const ethAddress = "0x2170Ed0880ac9A755fd29B2688956BD959F933F8";
-const ethContract = new web3.eth.Contract(ethABI, ethAddress);
+// const thgABI = require('./abi/thg');
+// const thgAddress = "0x9fD87aEfe02441B123c3c32466cD9dB4c578618f";
+// const thgContract = new web3.eth.Contract(thgABI, thgAddress);
 
-contract('pmm Test', async([alice, bob, admin, dev, minter]) => {
+// const zeroABI = require('./abi/zero');
+// const zeroExRouter = "0xDef1C0ded9bec7F1a1670819833240f027b25EfF";
+// const zeroExContract = new web3.eth.Contract(zeroABI, zeroExRouter);
+// const tester = "0xda91066AAcE5be94d370d22088d733a4107716fe";
+
+contract('test Test', async([alice, bob, admin, dev, minter]) => {
     before(async () => {
-        this.SwapRouter = await SwapRouter.new({from: alice});
-        await daiContract.methods.transfer(admin, '369386228078917274203').send({from: tokenOwner});
+        // this.testContract = await Test.new({from: alice});
+        this.swapRouterContract = await SwapRouter.new({from: alice});
+        // this.callTestContract = await CallTest.new({from: alice});
+        await busdContract.methods.transfer(admin, '500000').send({from: tokenOwner});
     });
 
     it('test', async() => {
-        await daiContract.methods.approve(this.SwapRouter.address, '369386228078917274203').send({from: admin});
-        let result = await this.SwapRouter.swap("pmmFeeDynamic", "0x1AF3F329e8BE154074D8769D1FFa4eE058B1DBc3", "369386228078917274203", "0x0000000000000000000000001af3f329e8be154074d8769d1ffa4ee058b1dbc30000000000000000000000002170ed0880ac9a755fd29b2688956bd959f933f8000000000000000000000000000000000000000000000014064381587d494a5b000000000000000000000000000000000000000000000000026a3b2ff5eaefff0000000000000000000000000000000000000000000000000000000000000120000000000000000000000000000000000000000000000000000000000000000000000000000000000000000071c292269718bc1e38edf6023fb427d35924389e000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000003200000000000000000000000000000000000000000000000000000000000000060000000000000000000000000000000000000000000000014064381587d494a5b00000000000000000000000000000000000000000000000000000000000002a000000000000000000000000006dbc4fe79e2541b03fe4731b2579c0b7f46f099000000000000000000000000c590175e458b83680867afd273527ff58f74c02b000000000000000000000000f9994570c235215633f8a1201233426e7489c5c50000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000027d5b5978b48000000000000000000000000000000000000000000000000014064df77e9c020b00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000060ded62a01ffffffffffffffffffffffffffffffffffffff21fac3c860ded5b20000001c000000000000000000000000000000000000000000000000000000000000018000000000000000000000000000000000000000000000000000000000000001e00000000000000000000000000000000000000000000000000000000000000024f47261b00000000000000000000000002170ed0880ac9a755fd29b2688956bd959f933f8000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000024f47261b00000000000000000000000001af3f329e8be154074d8769d1ffa4ee058b1dbc30000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000421cae45e123b91dc19a24139502d104e4e185642f2975bbbc4b624d94fe8f1f3dcf1f8e5e311ef14799c0c18071b549fd707609b8616180516a1fcb32ebd15d23e603000000000000000000000000000000000000000000000000000000000000",
-        {from: admin});
-        console.log(await ethContract.methods.balanceOf(this.SwapRouter.address).call());
+        let url = 'https://api2.metaswap.codefi.network/networks/56/trades?destinationToken=0x55d398326f99059ff775485246999027b3197955&sourceToken=0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56&sourceAmount=500000&slippage=3&timeout=10000&walletAddress='+admin;
+        console.log(url)
+        const res = await fetch(url);
+          
+        const swapData = await res.json();
+        
+        console.log(swapData[3].trade);
+        let tradeData = swapData[3].trade.data;
+        await busdContract.methods.approve(this.swapRouterContract.address, '500000').send({from: admin});
+        await this.swapRouterContract.swap("pmmFeeDynamic", "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56", '500000', tradeData, {from: admin});
+        let balance = await busdContract.methods.balanceOf(admin).call();
+        console.log('balance : ', balance);
+
+        // balance = await thcContract.methods.balanceOf(this.swapRouterContract.address).call();
+        console.log('balance : ', await web3.eth.getBalance(admin))
+        
+        // let data = await this.testContract.testCallFunction(this.callTestContract.address, thcAddress, 100000,{from: admin});
+        // console.log("data : ", data.logs[0].args);
     })
 })

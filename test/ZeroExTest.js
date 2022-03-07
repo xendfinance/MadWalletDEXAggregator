@@ -1,25 +1,52 @@
+// const { BN, ether, balance } = require('openzeppelin-test-helpers');
+// const { expect } = require('chai');
+// const ForceSend = artifacts.require('ForceSend');
+const {fetch} = require('cross-fetch');
+const Test = artifacts.require("TestSwap");
+const CallTest = artifacts.require("CallTest");
 const SwapRouter = artifacts.require("SwapRouter");
-const tokenOwner = '0xE1530F9b20C6E20cE56aDd3164097584Ef90Ea30';
-const usdcABI = require('./abi/usdc');
-const usdcAddress = "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d";
-const usdcContract = new web3.eth.Contract(usdcABI, usdcAddress);
+const tokenOwner = '0x61B2109bb57EA6B2BCAF0336b23252939e98EB2A';
+const thcABI = require('./abi/thc');
+const thcAddress = "0x3ee2200efb3400fabb9aacf31297cbdd1d435d47";
+// const thcAddress = "0x24802247bD157d771b7EFFA205237D8e9269BA8A";
+const thcContract = new web3.eth.Contract(thcABI, thcAddress);
 
-const busdABI = require('./abi/busd');
-const busdAddress = "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56";
-const busdContract = new web3.eth.Contract(busdABI, busdAddress);
+const thgABI = require('./abi/thg');
+const thgAddress = "0x9fD87aEfe02441B123c3c32466cD9dB4c578618f";
+const thgContract = new web3.eth.Contract(thgABI, thgAddress);
 
-contract('zeroEx Test', async([alice, bob, admin, dev, minter]) => {
+const zeroABI = require('./abi/zero');
+const zeroExRouter = "0xDef1C0ded9bec7F1a1670819833240f027b25EfF";
+const zeroExContract = new web3.eth.Contract(zeroABI, zeroExRouter);
+const tester = "0xda91066AAcE5be94d370d22088d733a4107716fe";
+
+contract('test Test', async([alice, bob, admin, dev, minter]) => {
     before(async () => {
-        this.SwapRouter = await SwapRouter.new({from: alice});
-        // await usdcContract.methods.transfer(admin, '109484817855095221280').send({from: tokenOwner});
+        // this.testContract = await Test.new({from: alice});
+        this.swapRouterContract = await SwapRouter.new({from: alice});
+        // this.callTestContract = await CallTest.new({from: alice});
+        // await thcContract.methods.transfer(admin, '100000').send({from: tokenOwner});
     });
 
     it('test', async() => {
-        // await usdcContract.methods.approve(this.SwapRouter.address, '109484817855095221280').send({from: "0x0b25a50f0081c177554e919eeff192cfe9efde15"});
-        console.log(await busdContract.methods.balanceOf("0x0b25a50f0081c177554e919eeff192cfe9efde15").call());
-        let result = await this.SwapRouter.swap("0xFeeDynamic", "0x0000000000000000000000000000000000000000", "1000000000000000", "0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e9e7cea3dedca5984780bafc599bd69add087d5600000000000000000000000000000000000000000000000000038d7ea4c68000000000000000000000000000000000000000000000000000062f78b6d329804b0000000000000000000000000000000000000000000000000000000000000120000000000000000000000000000000000000000000000000000e68f4745e340300000000000000000000000011ededebf63bef0ea2d2d071bdf88f71543ec6fb00000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000128c43c9ef6000000000000000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000038d7ea4c68000000000000000000000000000000000000000000000000000063d73001b143cfc00000000000000000000000000000000000000000000000000000000000000030000000000000000000000000000000000000000000000000000000000000002000000000000000000000000eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee000000000000000000000000e9e7cea3dedca5984780bafc599bd69add087d56869584cd00000000000000000000000011ededebf63bef0ea2d2d071bdf88f71543ec6fb00000000000000000000000000000000000000000000001d9756838a61e6cb22000000000000000000000000000000000000000000000000",
-        {from: "0x0b25a50f0081c177554e919eeff192cfe9efde15"});
-        console.log(await busdContract.methods.balanceOf("0x0b25a50f0081c177554e919eeff192cfe9efde15").call());
-        console.log(await busdContract.methods.balanceOf(this.SwapRouter.address).call());
+        let url = 'https://api2.metaswap.codefi.network/networks/56/trades?destinationToken=0x3ee2200efb3400fabb9aacf31297cbdd1d435d47&sourceToken=0x0000000000000000000000000000000000000000&sourceAmount=10000000000000000&slippage=3&timeout=10000&walletAddress='+admin;
+        // let url = 'https://api2.metaswap.codefi.network/networks/56/trades?destinationToken=0x24802247bD157d771b7EFFA205237D8e9269BA8A&sourceToken=0x0000000000000000000000000000000000000000&sourceAmount=10000000000000000&slippage=3&timeout=10000&walletAddress='+admin;
+        console.log(url)
+        const res = await fetch(url);
+          
+        const swapData = await res.json();
+        
+        // console.log(swapData[4].trade);
+        let tradeData = swapData[4].trade.data;
+        // await thcContract.methods.approve(this.swapRouterContract.address, '1000000000').send({from: admin});
+        await this.swapRouterContract.swap("0xFeeDynamic", "0x0000000000000000000000000000000000000000", '10000000000000000', tradeData, {from: admin, value: '10000000000000000'});
+        let balance = await thcContract.methods.balanceOf(admin).call();
+        console.log('balance : ', balance);
+
+        // balance = await thcContract.methods.balanceOf(this.swapRouterContract.address).call();
+        console.log('balance : ', await web3.eth.getBalance(admin))
+        
+        // let data = await this.testContract.testCallFunction(this.callTestContract.address, thcAddress, 100000,{from: admin});
+        // console.log("data : ", data.logs[0].args);
     })
 })

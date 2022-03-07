@@ -12,20 +12,21 @@ interface IParaswapRouter {
         uint256 fromAmount;
         uint256 toAmount;
         uint256 expectedAmount;
-        address payable partner;
-        uint256 deadline;
-        bytes16 uuid;
         address[] callees;
         bytes exchangeData;
         uint256[] startIndexes;
         uint256[] values;
         address payable beneficiary;
+        address payable partner;
         uint256 feePercent;
         bytes permit;
+        uint256 deadline;
+        bytes16 uuid;
     }
     function simpleSwap(
         SimpleData memory data
     ) external payable returns (uint256 receivedAmount);
+    function getTokenTransferProxy() external view returns (address);
 }
 
 interface IAirSwapLight {
@@ -41,6 +42,11 @@ interface IAirSwapLight {
         bytes32 r,
         bytes32 s
     ) external;
+    function ORDER_TYPEHASH() external view returns(bytes32);
+    function DOMAIN_SEPARATOR() external view returns(bytes32);
+    function signerFee() external view returns(uint256);
+    function authorize(address sender) external;
+    function revoke() external;
 }
 
 interface IZeroExRouter {
@@ -128,6 +134,7 @@ contract SwapRouter is Ownable{
         uint256 receivedAmount;
         uint256 feeAmount;
         address destinationToken;
+        uint256 swappingTokenAmount;
 
         assembly {
             fName := mload(add(data, 0x20))
@@ -147,6 +154,7 @@ contract SwapRouter is Ownable{
 
         assembly {
             destinationToken := mload(add(data, add(position, 0x40)))
+            swappingTokenAmount := mload(add(data, add(position, 0x60)))
         }
 
         if(tokenFrom != address(0)){
@@ -173,8 +181,19 @@ contract SwapRouter is Ownable{
             }
             else{
                 uint256 inputAmount;
+                bytes4 selector;
                 assembly {
-                    inputAmount := mload(add(exSwapData, 0x64))
+                    selector := mload(add(exSwapData, 0x20))
+                }
+                if(selector == 0xc43c9ef6) {
+                    assembly {
+                        inputAmount := mload(add(exSwapData, 0x44))
+                    }
+                }
+                else{
+                    assembly {
+                        inputAmount := mload(add(exSwapData, 0x64))
+                    }
                 }
                 (success, result) = zeroExRouter.call{value:inputAmount}(exSwapData);
             }
@@ -198,7 +217,16 @@ contract SwapRouter is Ownable{
                 oneInchData := add(cc, 0x0)
             }
             (address _caller, IOneInchRouter.SwapDescription memory desc, bytes memory _data) = parseOneInchData(oneInchData);
-            (receivedAmount, ) = IOneInchRouter(oneInchRouter).swap(_caller, desc, _data);
+            if(tokenFrom != address(0)){
+                (receivedAmount, ) = IOneInchRouter(oneInchRouter).swap(_caller, desc, _data);
+            }
+            else{
+                uint256 inputAmount;
+                assembly {
+                    inputAmount := mload(add(oneInchData, 0x104))
+                }
+                (receivedAmount, ) = IOneInchRouter(oneInchRouter).swap{value: inputAmount}(_caller, desc, _data);
+            }
         }
         else if (keccak256(abi.encodePacked((aggregatorId))) == keccak256(abi.encodePacked(("pmmFeeDynamic")))){
             if(tokenFrom != address(0)){
@@ -208,8 +236,8 @@ contract SwapRouter is Ownable{
             }
             bytes memory pmmData;
             uint256 takerAssetFillAmount;
-            position = position + 0x180;
             uint256 takerAssetFillAmountPosition = position + 0x60;
+            position = position + 0x180;
             assembly {
                 pmmData := mload(add(data, 0x0))
                 let cc := add(data, position)
@@ -241,8 +269,9 @@ contract SwapRouter is Ownable{
         }
         else if (keccak256(abi.encodePacked((aggregatorId))) == keccak256(abi.encodePacked(("paraswapV5FeeDynamic")))){
             if(tokenFrom != address(0)){
-                if(IERC20(tokenFrom).allowance(address(this), paraswapRouter) == 0){
-                    IERC20(tokenFrom).approve(paraswapRouter, type(uint256).max);
+                address proxy = IParaswapRouter(paraswapRouter).getTokenTransferProxy();
+                if(IERC20(tokenFrom).allowance(address(this), proxy) == 0){
+                    IERC20(tokenFrom).approve(proxy, type(uint256).max);
                 }
             }
             bytes memory paraswapData;
@@ -253,17 +282,39 @@ contract SwapRouter is Ownable{
                 paraswapData := add(cc, 0x0)
             }
             IParaswapRouter.SimpleData memory simpleData = parseParaswapData(paraswapData);
-            receivedAmount = IParaswapRouter(paraswapRouter).simpleSwap(simpleData);
+            if(tokenFrom != address(0)){
+                receivedAmount = IParaswapRouter(paraswapRouter).simpleSwap(simpleData);
+            }
+            else{
+                uint256 inputAmount;
+                assembly {
+                    inputAmount := mload(add(paraswapData, 0x84))
+                }
+                receivedAmount = IParaswapRouter(paraswapRouter).simpleSwap{value:inputAmount}(simpleData);
+            }
         }
 
-        
-        if(tokenFrom != address(0)){
-            IERC20(tokenFrom).transfer(feeAddress, feeAmount);
+        bool success;
+        bytes memory result;
+        if(swappingTokenAmount < amount){
+            if(tokenFrom != address(0)){
+                IERC20(tokenFrom).transfer(feeAddress, feeAmount);
+            }
+            else{
+                (success,) = payable(feeAddress).call{value: feeAmount}("");            
+            }
+        }
+        if(destinationToken != address(0)){
+            if(receivedAmount > IERC20(destinationToken).balanceOf(address(this))){
+                receivedAmount = IERC20(destinationToken).balanceOf(address(this));
+            }
             IERC20(destinationToken).transfer(msg.sender, receivedAmount);
         }
         else{
-            (bool success,) = payable(feeAddress).call{value: feeAmount}("");
-            (success,) = payable(msg.sender).call{value: receivedAmount}("");
+            if(receivedAmount > address(this).balance){
+                receivedAmount = address(this).balance;
+            }
+            (success,result) = payable(msg.sender).call{value: receivedAmount}("");
         }
     }
 
@@ -386,7 +437,7 @@ contract SwapRouter is Ownable{
         }
     }
 
-    function parsePmmData(bytes memory data) public pure returns(
+    function parsePmmData(bytes memory data) public view returns(
         IPmmRouter.Order memory order,
         bytes memory signature
     ){
@@ -406,7 +457,7 @@ contract SwapRouter is Ownable{
         signature) = getPmmOrderInfo_2(data);
     }
 
-    function getPmmOrderInfo_1(bytes memory data) public pure returns(
+    function getPmmOrderInfo_1(bytes memory data) public view returns(
         address makerAddress,
         address takerAddress,
         address feeRecipientAddress,
@@ -416,13 +467,14 @@ contract SwapRouter is Ownable{
         uint256 makerFee){
         assembly {
             makerAddress := mload(add(data, 0x20))
-            takerAddress := mload(add(data, 0x40))
+            // takerAddress := mload(add(data, 0x40))
             feeRecipientAddress := mload(add(data, 0x60))
             senderAddress := mload(add(data, 0x80))
             makerAssetAmount := mload(add(data, 0xA0))
             takerAssetAmount := mload(add(data, 0xC0))
             makerFee := mload(add(data, 0xE0))
         }
+        takerAddress = address(this);
     }
 
     function getPmmOrderInfo_2(bytes memory data) public pure returns(
@@ -529,6 +581,27 @@ contract SwapRouter is Ownable{
             bytes32 r,
             bytes32 s
         ) = parseAirSwapData(airswapData);
+        {
+            bytes32 hash = keccak256(
+                abi.encode(
+                IAirSwapLight(airswapLight).ORDER_TYPEHASH(),
+                nonce,
+                expiry,
+                signerWallet,
+                signerToken,
+                signerAmount,
+                IAirSwapLight(airswapLight).signerFee(),
+                address(this),
+                senderToken,
+                senderAmount
+                )
+            );
+            bytes32 digest =
+            keccak256(abi.encodePacked("\x19\x01", IAirSwapLight(airswapLight).DOMAIN_SEPARATOR(), hash));
+            address signatory = ecrecover(digest, v, r, s);
+            IAirSwapLight(airswapLight).authorize(signatory);
+        }
+
         IAirSwapLight(airswapLight).swap(
             nonce,
             expiry,
