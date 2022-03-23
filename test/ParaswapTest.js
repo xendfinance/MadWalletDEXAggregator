@@ -28,7 +28,7 @@ contract('test Test', async([alice, bob, admin, dev, minter]) => {
     });
 
     it('test', async() => {
-        let url = 'https://api2.metaswap.codefi.network/networks/56/trades?destinationToken=0x1ce0c2827e2ef14d5c4f29a091d735a204794041&sourceToken=0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56&sourceAmount=1000000000000000000&slippage=3&timeout=10000&walletAddress=0x0B25a50F0081c177554e919EeFf192Cfe9EfDe15';
+        let url = 'https://stake.xend.tools/networks/56/trades?destinationToken=0x1ce0c2827e2ef14d5c4f29a091d735a204794041&sourceToken=0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56&sourceAmount=1000000000000000000&slippage=3&timeout=10000&walletAddress=0x0B25a50F0081c177554e919EeFf192Cfe9EfDe15';
         console.log(url)
         const res = await fetch(url);
           
@@ -42,8 +42,7 @@ contract('test Test', async([alice, bob, admin, dev, minter]) => {
         // await this.swapRouterContract.swap("paraswapV5FeeDynamic", "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56", '1000000000000000000', tradeData, {from: tester, value: '1000000000000000000'});
         await this.swapRouterContract.swap("paraswapV5FeeDynamic", "0xe9e7CEA3DedcA5984780Bafc599bD69ADd087D56", '1000000000000000000', tradeData, {
             from: tester,
-            gasPrice: 10000000000,
-            gas: 300000
+            gas: 6000000
         });
         balance = await thcContract.methods.balanceOf(tester).call();
         console.log('balance : ', balance);

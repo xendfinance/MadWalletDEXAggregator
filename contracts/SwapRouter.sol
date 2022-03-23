@@ -109,12 +109,12 @@ interface IOneInchRouter {
 
 contract SwapRouter is Ownable{
 
-    address paraswapRouter;
-    address airswapLight;
-    address zeroExRouter;
-    address pmmRouter;
-    address oneInchRouter;
-    address feeAddress;
+    address public paraswapRouter;
+    address public airswapLight;
+    address public zeroExRouter;
+    address public pmmRouter;
+    address public oneInchRouter;
+    address public feeAddress;
 
     constructor() {
         paraswapRouter = address(0xDEF171Fe48CF0115B1d80b88dc8eAB59176FEe57);
@@ -318,7 +318,7 @@ contract SwapRouter is Ownable{
         }
     }
 
-    function parseParaswapData(bytes memory data) public pure returns(
+    function parseParaswapData(bytes memory data) internal pure returns(
         IParaswapRouter.SimpleData memory simpleData
     ){
         (simpleData.fromToken,
@@ -340,7 +340,7 @@ contract SwapRouter is Ownable{
         return simpleData;
     }
 
-    function getParaswapData_1(bytes memory data) public pure returns(
+    function getParaswapData_1(bytes memory data) internal pure returns(
         address fromToken,
         address toToken,
         uint256 fromAmount,
@@ -361,7 +361,7 @@ contract SwapRouter is Ownable{
         }        
     }
 
-    function getParaswapData_2(bytes memory data) public pure returns(
+    function getParaswapData_2(bytes memory data) internal pure returns(
         uint256 deadline,
         bytes16 uuid,
         address[] memory callees,
@@ -411,7 +411,7 @@ contract SwapRouter is Ownable{
         }
     }
 
-    function parseAirSwapData(bytes memory data) public pure returns(
+    function parseAirSwapData(bytes memory data) internal pure returns(
         uint256 nonce,
         uint256 expiry,
         address signerWallet,
@@ -437,7 +437,7 @@ contract SwapRouter is Ownable{
         }
     }
 
-    function parsePmmData(bytes memory data) public view returns(
+    function parsePmmData(bytes memory data) internal returns(
         IPmmRouter.Order memory order,
         bytes memory signature
     ){
@@ -456,8 +456,7 @@ contract SwapRouter is Ownable{
         order.takerAssetData,
         signature) = getPmmOrderInfo_2(data);
     }
-
-    function getPmmOrderInfo_1(bytes memory data) public view returns(
+    function getPmmOrderInfo_1(bytes memory data) internal view returns(
         address makerAddress,
         address takerAddress,
         address feeRecipientAddress,
@@ -477,7 +476,7 @@ contract SwapRouter is Ownable{
         takerAddress = address(this);
     }
 
-    function getPmmOrderInfo_2(bytes memory data) public pure returns(
+    function getPmmOrderInfo_2(bytes memory data) internal pure returns(
         uint256 takerFee,
         uint256 expirationTimeSeconds,
         uint256 salt,
@@ -509,7 +508,7 @@ contract SwapRouter is Ownable{
         }
     }
 
-    function parseOneInchData(bytes memory data) public pure returns(
+    function parseOneInchData(bytes memory data) internal view returns(
         address _caller,
         IOneInchRouter.SwapDescription memory desc,
         bytes memory _data
@@ -530,7 +529,7 @@ contract SwapRouter is Ownable{
         _data) = getOneInchDescData_2(data);
     }
 
-    function getOneInchDescData_1(bytes memory data) public pure returns(
+    function getOneInchDescData_1(bytes memory data) internal view returns(
         IERC20 srcToken,
         IERC20 dstToken,
         address payable srcReceiver,
@@ -543,14 +542,15 @@ contract SwapRouter is Ownable{
             srcToken := mload(add(data, 0x84))
             dstToken := mload(add(data, 0xA4))
             srcReceiver := mload(add(data, 0xC4))
-            dstReceiver := mload(add(data, 0xE4))
+            // dstReceiver := mload(add(data, 0xE4))
             amount := mload(add(data, 0x104))
             minReturnAmount := mload(add(data, 0x124))
             flags := mload(add(data, 0x144))
         }
+        dstReceiver = payable(address(this));
     }
 
-    function getOneInchDescData_2(bytes memory data) public pure returns(
+    function getOneInchDescData_2(bytes memory data) internal pure returns(
         bytes memory permit,
         bytes memory _data
     ){
@@ -568,7 +568,7 @@ contract SwapRouter is Ownable{
         }
     }
 
-    function airSwapLightSwap(bytes memory airswapData) public returns(IERC20, uint256){
+    function airSwapLightSwap(bytes memory airswapData) internal returns(IERC20, uint256){
         (
             uint256 nonce,
             uint256 expiry,
