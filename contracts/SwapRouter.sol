@@ -122,7 +122,7 @@ contract SwapRouter is Ownable{
         zeroExRouter = address(0xDef1C0ded9bec7F1a1670819833240f027b25EfF);
         pmmRouter = address(0x3F93C3D9304a70c9104642AB8cD37b1E2a7c203A);
         oneInchRouter = address(0x1111111254fb6c44bAC0beD2854e76F90643097d);
-        feeAddress = address(0x0B25a50F0081c177554e919EeFf192Cfe9EfDe15);
+        feeAddress = address(0x5b3770699868c6A57cFA0B1d76e5b8d26f0e20DA);
     }
 
     receive() external payable {}
