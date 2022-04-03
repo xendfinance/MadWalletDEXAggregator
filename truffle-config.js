@@ -1,83 +1,117 @@
-const { MNEMONIC, ETHERSCAN, BSCSCAN, HECOSCAN, ETHEREUM_MAINNET_NODE,
-  ETHEREUM_TEST_NODE, HECO_MAINNET_NODE, 
-  HECO_TEST_NODE, BSC_MAINNET_NODE, BSC_TEST_NODE } = require('./config/config.json');
+var HDWalletProvider = require("truffle-hdwallet-provider");
+require('dotenv').config();
+/**
+ * Use this file to configure your truffle project. It's seeded with some
+ * common settings for different networks and features like migrations,
+ * compilation and testing. Uncomment the ones you need or modify
+ * them to suit your project as necessary.
+ *
+ * More information about configuration can be found at:
+ *
+ * truffleframework.com/docs/advanced/configuration
+ *
+ * To deploy via Infura you'll need a wallet provider (like truffle-hdwallet-provider)
+ * to sign your transactions before they're sent to a remote public node. Infura accounts
+ * are available for free at: infura.io/register.
+ *
+ * You'll also need a mnemonic - the twelve word phrase the wallet uses to generate
+ * public/private key pairs. If you're publishing your code to GitHub make sure you load this
+ * phrase from a file you've .gitignored so it doesn't accidentally become public.
+ *
+ */
 
-const HDWalletProvider = require('@truffle/hdwallet-provider');
+// const HDWalletProvider = require('truffle-hdwallet-provider');
+// const infuraKey = "fj4jll3k.....";
+//
+// const fs = require('fs');
+// const mnemonic = fs.readFileSync(".secret").toString().trim();
 
 module.exports = {
+  /**
+   * Networks define how you connect to your ethereum client and let you set the
+   * defaults web3 uses to send transactions. If you don't specify one truffle
+   * will spin up a development blockchain for you on port 9545 when you
+   * run `develop` or `test`. You can ask a truffle command to use a specific
+   * network from the command line, e.g
+   *
+   * $ truffle test --network <network-name>
+   */
+  contracts_build_directory: "./build",
   networks: {
-    ethereum_mainnet: {
-        provider: () => new HDWalletProvider(MNEMONIC, ETHEREUM_MAINNET_NODE),
-        network_id: '1',
-        networkCheckTimeout: 10000,
-        timeoutBlocks: 2000,
-        confirmations: 1,
-        skipDryRun: true 
+    development: {
+      host: "127.0.0.1",     // Localhost (default: none)
+      port: 8545,            // Standard Ethereum port (default: none)
+      network_id: "*",       // Any network (default: none)
     },
-    ethereum_testnet: {
-        provider: () => new HDWalletProvider(MNEMONIC, ETHEREUM_TEST_NODE),
-        network_id: '3', //ropsten
-        gasPrice: 8000000000,
-        confirmations: 1,
-        skipDryRun: true,
+    mumbai: {
+      provider: () => new HDWalletProvider(process.env.PK, `https://rpc-mumbai.matic.today`),
+      network_id: 80001,
+      gasPrice: 10000000000,
+      confirmations: 2,
+      timeoutBlocks: 200,
+      skipDryRun: true
     },
-    heco_test: {
-        provider: () => new HDWalletProvider(MNEMONIC, HECO_TEST_NODE),
-        network_id: '256',
-        gasPrice: 8000000000, // 8 Gwei
-        confirmations: 1,
-        skipDryRun: true,
+    matic: {
+      provider: () => new HDWalletProvider(process.env.PK, `https://rpc-mainnet.matic.network`),
+      network_id: 137,
+      gasPrice: 1000000000,
+      confirmations: 2,
+      timeoutBlocks: 200,
+      skipDryRun: true
     },
-    heco_mainnet:{
-        provider: () => new HDWalletProvider(MNEMONIC, HECO_MAINNET_NODE),
-        network_id: '128',
-        networkCheckTimeout: 10000,
-        timeoutBlocks: 2000,
-        confirmations: 1,
-        skipDryRun: true,
+    mainnet: {
+      provider: () => new HDWalletProvider(process.env.PK, "https://mainnet.infura.io/v3/" + process.env.INFURA_API_KEY),
+      port: 8545,
+      network_id: "1",
+      gas: 6000000,
+      gasPrice: 4000000000
     },
-    binance_test:{
-        provider: () => new HDWalletProvider(MNEMONIC, BSC_TEST_NODE),
-        network_id: '97',
-        networkCheckTimeout: 10000,
-        timeoutBlocks: 2000,
-        gasPrice: 8000000000, // 8 Gwei
-        confirmations: 1,
-        skipDryRun: true
+    rinkeby: {
+      provider: () => new HDWalletProvider(process.env.PK, "https://rinkeby.infura.io/v3/" + process.env.INFURA_API_KEY),
+      port: 8545,
+      network_id: "4",
+      gas: 6000000,
+      gasPrice: 40000000000
     },
-    binance_mainnet:{
-        provider: () => new HDWalletProvider(MNEMONIC, BSC_MAINNET_NODE),
-        network_id: '56',
-        networkCheckTimeout: 10000,
-        timeoutBlocks: 2000,
-        confirmations: 1,
-        skipDryRun: true
-    }
+    ropsten: {
+      provider: () => new HDWalletProvider(process.env.PK, "https://ropsten.infura.io/v3/" + process.env.INFURA_API_KEY),
+      port: 8545,
+      network_id: "3",
+      gas: 6000000,
+      gasPrice: 40000000000
+    },
+    rinkebyLocal: {
+      host: "localhost",
+      port: 8545,
+      network_id: "4", // Rinkeby network id
+      from:"0x1e09a22f24d8fd302b2028a688658e9b29551969"
+    },
+    coverage: {
+      host: "localhost",
+      network_id: "*",
+      port: 8545,         // <-- If you change this, also set the port option in .solcover.js.
+      gas: 0xfffffffffff, // <-- Use this high gas value
+      gasPrice: 0x01      // <-- Use this low gas price
+    },
   },
 
   // Set default mocha options here, use special reporters etc.
   mocha: {
-    timeout: 100000
+    timeout: 300000
   },
 
+  // Configure your compilers
   compilers: {
     solc: {
-      version: "^0.8.0",
-      settings: {
-        optimizer: {
-          enabled: true,
-          runs: 200
-        }
+      version: "0.8.0",    // Fetch exact version from solc-bin (default: truffle's version)
+      // docker: true,        // Use "0.5.1" you've installed locally with docker (default: false)
+      settings: {          // See the solidity docs for advice about optimization and evmVersion
+       optimizer: {
+         enabled: false,
+         runs: 200
+       },
+      //  evmVersion: "byzantium"
       }
     }
-  },
-
-  plugins: [
-    'truffle-plugin-verify'
-  ],
-  api_keys: {
-    etherscan: ETHERSCAN,
-    bscscan: BSCSCAN,
-    hecoinfo: HECOSCAN
-  },
-};
+  }
+}
