@@ -1,8 +1,8 @@
 ## DOCUMENTATION
 
-FeeSmartContract
+DEX Aggregator
 
-## MadWallet FeeSmartContract on Binance Smart Chain:
+## MadWallet DEX Aggregator on Binance Smart Chain:
 
 ### 1. Provided Swap Data
 Gets Swap Data from Madwallet Swap Backend - https://stake.xend.tools/networks/56/trades?destinationToken=&sourceToken=&sourceAmount=&slippage=&timeout=&walletAddress=
