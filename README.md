@@ -23,7 +23,7 @@ Madwallet app provides Swap Data with bytes data type.
 
 Here is some example for parsing bytes data.
 
-https://github.com/xendfinance/MadWalletDEXAggregator/tree/swap/router/parse_datas
+https://github.com/xendfinance/MadWalletDEXAggregator/tree/main/parse_datas
 
 Swapping is doing with parsed data on selected swap router.
 
@@ -31,23 +31,23 @@ Swapping is doing with parsed data on selected swap router.
 
 #### 1. AirSwapLight
 ganache-cli -f https://bsc.getblock.io/mainnet/?api_key=API_KEY -m "hidden moral pulp timber famous opinion melt any praise keen tissue aware" -l 100000000 -i 1 --allowUnlimitedContractSize
-https://github.com/xendfinance/MadWalletDEXAggregator/blob/swap/router/test/AirSwapLightTest.js
+https://github.com/xendfinance/MadWalletDEXAggregator/tree/main/test/AirSwapLightTest.js
 
 #### 2. OneInchSwap
 ganache-cli -f https://bsc.getblock.io/mainnet/?api_key=API_KEY -m "hidden moral pulp timber famous opinion melt any praise keen tissue aware" -l 100000000 -i 1 --allowUnlimitedContractSize
-https://github.com/xendfinance/MadWalletDEXAggregator/blob/swap/router/test/OneInchSwapTest.js
+https://github.com/xendfinance/MadWalletDEXAggregator/tree/main/test/OneInchSwapTest.js
 
 #### 3. ParaSwap
 ganache-cli -f https://bsc.getblock.io/mainnet/?api_key=API_KEY -m "hidden moral pulp timber famous opinion melt any praise keen tissue aware" -l 100000000 -i 1 -u 0x0B25a50F0081c177554e919EeFf192Cfe9EfDe15 --allowUnlimitedContractSize
-https://github.com/xendfinance/MadWalletDEXAggregator/blob/swap/router/test/ParaswapTest.js 
+https://github.com/xendfinance/MadWalletDEXAggregator/tree/main/test/ParaswapTest.js 
 
 #### 4. PmmSwap
 ganache-cli -f https://bsc.getblock.io/mainnet/?api_key=API_KEY -m "hidden moral pulp timber famous opinion melt any praise keen tissue aware" -l 100000000 -i 1 --allowUnlimitedContractSize
-https://github.com/xendfinance/MadWalletDEXAggregator/blob/swap/router/test/PmmTest.js
+https://github.com/xendfinance/MadWalletDEXAggregator/tree/main/test/PmmTest.js
 
 #### 5. ZeroExSwap
 ganache-cli -f https://bsc.getblock.io/mainnet/?api_key=API_KEY -m "hidden moral pulp timber famous opinion melt any praise keen tissue aware" -l 100000000 -i 1 --allowUnlimitedContractSize
-https://github.com/xendfinance/MadWalletDEXAggregator/blob/swap/router/test/ZeroExTest.js
+https://github.com/xendfinance/MadWalletDEXAggregator/tree/main/test/ZeroExTest.js
 
 ## Deployed Contracts
 https://bscscan.com/address/0x32Dc22c7357F00E18Aa700674527A2a9BbBC77d9
