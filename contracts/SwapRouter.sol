@@ -1,9 +1,12 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.8.0;
+pragma solidity 0.8.9;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import "@openzeppelin/contracts/utils/Context.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 
 interface IParaswapRouter {
     struct SimpleData {
@@ -56,26 +59,32 @@ interface IZeroExRouter {
 interface IPmmRouter {
 
     struct Order {
-        address makerAddress;          
-        address takerAddress;          
-        address feeRecipientAddress;   
-        address senderAddress;         
-        uint256 makerAssetAmount;      
-        uint256 takerAssetAmount;      
-        uint256 makerFee;              
-        uint256 takerFee;              
-        uint256 expirationTimeSeconds; 
-        uint256 salt;                  
-        bytes makerAssetData;          
-        bytes takerAssetData;           
+        address makerAddress;           // Address that created the order.      
+        address takerAddress;           // Address that is allowed to fill the order. If set to 0, any address is allowed to fill the order.          
+        address feeRecipientAddress;    // Address that will recieve fees when order is filled.      
+        address senderAddress;          // Address that is allowed to call Exchange contract methods that affect this order. If set to 0, any address is allowed to call these methods.
+        uint256 makerAssetAmount;       // Amount of makerAsset being offered by maker. Must be greater than 0.        
+        uint256 takerAssetAmount;       // Amount of takerAsset being bid on by maker. Must be greater than 0.        
+        uint256 makerFee;               // Amount of ZRX paid to feeRecipient by maker when order is filled. If set to 0, no transfer of ZRX from maker to feeRecipient will be attempted.
+        uint256 takerFee;               // Amount of ZRX paid to feeRecipient by taker when order is filled. If set to 0, no transfer of ZRX from taker to feeRecipient will be attempted.
+        uint256 expirationTimeSeconds;  // Timestamp in seconds at which order expires.          
+        uint256 salt;                   // Arbitrary number to facilitate uniqueness of the order's hash.     
+        bytes makerAssetData;           // Encoded data that can be decoded by a specified proxy contract when transferring makerAsset. The last byte references the id of this proxy.
+        bytes takerAssetData;           // Encoded data that can be decoded by a specified proxy contract when transferring takerAsset. The last byte references the id of this proxy.
     }
 
     struct FillResults {
-        uint256 makerAssetFilledAmount;
-        uint256 takerAssetFilledAmount;
-        uint256 makerFeePaid;          
-        uint256 takerFeePaid;          
+        uint256 makerAssetFilledAmount;  // Total amount of makerAsset(s) filled.
+        uint256 takerAssetFilledAmount;  // Total amount of takerAsset(s) filled.
+        uint256 makerFeePaid;            // Total amount of ZRX paid by maker(s) to feeRecipient(s).
+        uint256 takerFeePaid;            // Total amount of ZRX paid by taker to feeRecipients(s).
     }
+
+    /// @dev Fills the input order.
+    /// @param order Order struct containing order specifications.
+    /// @param takerAssetFillAmount Desired amount of takerAsset to sell.
+    /// @param signature Proof that order has been created by maker.
+    /// @return Amounts filled and fees paid by maker and taker.
 
     function fillOrder(
         Order memory order,
@@ -107,7 +116,11 @@ interface IOneInchRouter {
     returns (uint256 returnAmount, uint256 gasLeft);
 }
 
-contract SwapRouter is Ownable{
+contract SwapRouter is Context, ReentrancyGuard, Initializable{
+    using SafeERC20 for IERC20;
+
+    address private _owner;
+    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
 
     address public paraswapRouter;
     address public airswapLight;
@@ -116,7 +129,10 @@ contract SwapRouter is Ownable{
     address public oneInchRouter;
     address public feeAddress;
 
-    constructor() {
+    constructor() {}
+
+    function initialize() public initializer{
+        _transferOwnership(_msgSender());
         paraswapRouter = address(0xDEF171Fe48CF0115B1d80b88dc8eAB59176FEe57);
         airswapLight = address(0xc98314a5077DBa8F12991B29bcE39F834E82e197);
         zeroExRouter = address(0xDef1C0ded9bec7F1a1670819833240f027b25EfF);
@@ -127,7 +143,7 @@ contract SwapRouter is Ownable{
 
     receive() external payable {}
 
-    function swap(string memory aggregatorId, address tokenFrom, uint256 amount, bytes memory data) public payable{
+    function swap(string memory aggregatorId, address tokenFrom, uint256 amount, bytes memory data) external payable{
 
         bytes4 fName;
         uint256 position;
@@ -158,7 +174,7 @@ contract SwapRouter is Ownable{
         }
 
         if(tokenFrom != address(0)){
-            IERC20(tokenFrom).transferFrom(msg.sender, address(this), amount);
+            IERC20(tokenFrom).safeTransferFrom(msg.sender, address(this), amount);
         }
 
         if(keccak256(abi.encodePacked((aggregatorId))) == keccak256(abi.encodePacked(("0xFeeDynamic")))){
@@ -298,25 +314,38 @@ contract SwapRouter is Ownable{
         bytes memory result;
         if(swappingTokenAmount < amount){
             if(tokenFrom != address(0)){
-                IERC20(tokenFrom).transfer(feeAddress, feeAmount);
+                IERC20(tokenFrom).safeTransfer(feeAddress, feeAmount);
             }
             else{
-                (success,) = payable(feeAddress).call{value: feeAmount}("");            
+                (success,result) = payable(feeAddress).call{value: feeAmount}("");
+                require(success, "Failed to send BNB");
             }
         }
         if(destinationToken != address(0)){
             if(receivedAmount > IERC20(destinationToken).balanceOf(address(this))){
                 receivedAmount = IERC20(destinationToken).balanceOf(address(this));
             }
-            IERC20(destinationToken).transfer(msg.sender, receivedAmount);
+            IERC20(destinationToken).safeTransfer(msg.sender, receivedAmount);
         }
         else{
             if(receivedAmount > address(this).balance){
                 receivedAmount = address(this).balance;
             }
             (success,result) = payable(msg.sender).call{value: receivedAmount}("");
+            require(success, "Failed to send BNB");
         }
     }
+
+    /**
+    * @param fromToken Address of the source token
+    * @param fromAmount Amount of source tokens to be swapped
+    * @param toAmount Minimum destination token amount expected out of this swap
+    * @param expectedAmount Expected amount of destination tokens without slippage
+    * @param beneficiary Beneficiary address
+    * 0 then 100% will be transferred to beneficiary. Pass 10000 for 100%
+    * @param path Route to be taken for this swap to take place
+
+    */
 
     function parseParaswapData(bytes memory data) internal pure returns(
         IParaswapRouter.SimpleData memory simpleData
@@ -411,6 +440,20 @@ contract SwapRouter is Ownable{
         }
     }
 
+    /**
+    * @notice AirSwap
+    * @param nonce uint256 Unique and should be sequential
+    * @param expiry uint256 Expiry in seconds since 1 January 1970
+    * @param signerWallet address Wallet of the signer
+    * @param signerToken address ERC20 token transferred from the signer
+    * @param signerAmount uint256 Amount transferred from the signer
+    * @param senderToken address ERC20 token transferred from the sender
+    * @param senderAmount uint256 Amount transferred from the sender
+    * @param v uint8 "v" value of the ECDSA signature
+    * @param r bytes32 "r" value of the ECDSA signature
+    * @param s bytes32 "s" value of the ECDSA signature
+    */
+
     function parseAirSwapData(bytes memory data) internal pure returns(
         uint256 nonce,
         uint256 expiry,
@@ -437,7 +480,10 @@ contract SwapRouter is Ownable{
         }
     }
 
-    function parsePmmData(bytes memory data) internal returns(
+    /// @param order Order quote to fill
+    /// @param signature Signature to confirm quote ownership
+
+    function parsePmmData(bytes memory data) internal view returns(
         IPmmRouter.Order memory order,
         bytes memory signature
     ){
@@ -456,6 +502,7 @@ contract SwapRouter is Ownable{
         order.takerAssetData,
         signature) = getPmmOrderInfo_2(data);
     }
+    
     function getPmmOrderInfo_1(bytes memory data) internal view returns(
         address makerAddress,
         address takerAddress,
@@ -466,7 +513,6 @@ contract SwapRouter is Ownable{
         uint256 makerFee){
         assembly {
             makerAddress := mload(add(data, 0x20))
-            // takerAddress := mload(add(data, 0x40))
             feeRecipientAddress := mload(add(data, 0x60))
             senderAddress := mload(add(data, 0x80))
             makerAssetAmount := mload(add(data, 0xA0))
@@ -508,6 +554,10 @@ contract SwapRouter is Ownable{
         }
     }
 
+    /// @param _caller Aggregation executor that executes calls described in `data`
+    /// @param desc Swap description
+    /// @param _data Encoded calls that `caller` should execute in between of swaps
+
     function parseOneInchData(bytes memory data) internal view returns(
         address _caller,
         IOneInchRouter.SwapDescription memory desc,
@@ -542,7 +592,6 @@ contract SwapRouter is Ownable{
             srcToken := mload(add(data, 0x84))
             dstToken := mload(add(data, 0xA4))
             srcReceiver := mload(add(data, 0xC4))
-            // dstReceiver := mload(add(data, 0xE4))
             amount := mload(add(data, 0x104))
             minReturnAmount := mload(add(data, 0x124))
             flags := mload(add(data, 0x144))
@@ -617,7 +666,53 @@ contract SwapRouter is Ownable{
         return (senderToken, signerAmount);
     }
 
-    function updateFeeAddress(address _feeAddress) public onlyOwner {
+    function updateFeeAddress(address _feeAddress) external onlyOwner {
+        require(_feeAddress != address(0), "INVALID_FEE_WALLET");
         feeAddress = _feeAddress;
+    }
+
+    /**
+     * @dev Returns the address of the current owner.
+     */
+    function owner() public view virtual returns (address) {
+        return _owner;
+    }
+
+    /**
+     * @dev Throws if called by any account other than the owner.
+     */
+    modifier onlyOwner() {
+        require(owner() == _msgSender(), "Ownable: caller is not the owner");
+        _;
+    }
+
+    /**
+     * @dev Leaves the contract without owner. It will not be possible to call
+     * `onlyOwner` functions anymore. Can only be called by the current owner.
+     *
+     * NOTE: Renouncing ownership will leave the contract without an owner,
+     * thereby removing any functionality that is only available to the owner.
+     */
+    function renounceOwnership() public virtual onlyOwner {
+        _transferOwnership(address(0));
+    }
+
+    /**
+     * @dev Transfers ownership of the contract to a new account (`newOwner`).
+     * Can only be called by the current owner.
+     */
+    function transferOwnership(address newOwner) public virtual onlyOwner {
+        require(newOwner != address(0), "Ownable: new owner is the zero address");
+        _transferOwnership(newOwner);
+    }
+
+    /**
+     * @dev Transfers ownership of the contract to a new account (`newOwner`).
+     * Internal function without access restriction.
+     */
+    function _transferOwnership(address newOwner) internal virtual {
+        address oldOwner = _owner;
+        _owner = newOwner;
+        emit OwnershipTransferred(oldOwner, newOwner);
     }
 }
