@@ -10,10 +10,9 @@ Gets Swap Data from Madwallet Swap Backend - https://stake.xend.tools/networks/5
 Madwallet Swap Backend provides datas for swapping from 5 lending platforms.
 
 Here are swap routers on lending platforms.
-* AirSwap - 0xc98314a5077DBa8F12991B29bcE39F834E82e197
+* AirSwapV3 - 0x132F13C3896eAB218762B9e46F55C9c478905849
 * 1inchSwap - 0x1111111254fb6c44bAC0beD2854e76F90643097ds
 * Paraswap - 0xDEF171Fe48CF0115B1d80b88dc8eAB59176FEe57
-* Pmmswap (old version of zeroEx) - 0x3F93C3D9304a70c9104642AB8cD37b1E2a7c203A
 * ZeroEx - 0xDef1C0ded9bec7F1a1670819833240f027b25EfF
 
 MadwalletApp selects one platform of them. It depends on the highest price on swapping.
@@ -29,24 +28,20 @@ Swapping is doing with parsed data on selected swap router.
 
 ## Fork mainnet for testing
 
-#### 1. AirSwapLight
-ganache-cli -f https://bsc.getblock.io/mainnet/?api_key=API_KEY -m "hidden moral pulp timber famous opinion melt any praise keen tissue aware" -l 100000000 -i 1 --allowUnlimitedContractSize
+#### 1. AirSwapV3
+ganache-cli -f https://bsc.getblock.io/mainnet/?api_key=API_KEY -m "hidden moral pulp timber famous opinion melt any praise keen tissue aware" -l 100000000 -i 1 --chainId 56 -u 0x72a53cdbbcc1b9efa39c834a540550e23463aacb --allowUnlimitedContractSize
 https://github.com/xendfinance/MadWalletDEXAggregator/tree/main/test/AirSwapLightTest.js
 
 #### 2. OneInchSwap
-ganache-cli -f https://bsc.getblock.io/mainnet/?api_key=API_KEY -m "hidden moral pulp timber famous opinion melt any praise keen tissue aware" -l 100000000 -i 1 --allowUnlimitedContractSize
+ganache-cli -f https://bsc.getblock.io/mainnet/?api_key=API_KEY -m "hidden moral pulp timber famous opinion melt any praise keen tissue aware" -l 100000000 -i 1 --chainId 56 --allowUnlimitedContractSize
 https://github.com/xendfinance/MadWalletDEXAggregator/tree/main/test/OneInchSwapTest.js
 
 #### 3. ParaSwap
-ganache-cli -f https://bsc.getblock.io/mainnet/?api_key=API_KEY -m "hidden moral pulp timber famous opinion melt any praise keen tissue aware" -l 100000000 -i 1 -u 0x0B25a50F0081c177554e919EeFf192Cfe9EfDe15 --allowUnlimitedContractSize
+ganache-cli -f https://bsc.getblock.io/mainnet/?api_key=API_KEY -m "hidden moral pulp timber famous opinion melt any praise keen tissue aware" -l 100000000 -i 1 --chainId 56 -u 0x72a53cdbbcc1b9efa39c834a540550e23463aacb --allowUnlimitedContractSize
 https://github.com/xendfinance/MadWalletDEXAggregator/tree/main/test/ParaswapTest.js 
 
-#### 4. PmmSwap
-ganache-cli -f https://bsc.getblock.io/mainnet/?api_key=API_KEY -m "hidden moral pulp timber famous opinion melt any praise keen tissue aware" -l 100000000 -i 1 --allowUnlimitedContractSize
-https://github.com/xendfinance/MadWalletDEXAggregator/tree/main/test/PmmTest.js
-
-#### 5. ZeroExSwap
-ganache-cli -f https://bsc.getblock.io/mainnet/?api_key=API_KEY -m "hidden moral pulp timber famous opinion melt any praise keen tissue aware" -l 100000000 -i 1 --allowUnlimitedContractSize
+#### 4. ZeroExSwap
+ganache-cli -f https://bsc.getblock.io/mainnet/?api_key=API_KEY -m "hidden moral pulp timber famous opinion melt any praise keen tissue aware" -l 100000000 -i 1 --chainId 56 --allowUnlimitedContractSize
 https://github.com/xendfinance/MadWalletDEXAggregator/tree/main/test/ZeroExTest.js
 
 ## Deployed Contracts
