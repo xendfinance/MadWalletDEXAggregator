@@ -37,9 +37,19 @@ interface IParaswapRouter {
         uint256 deadline;
         bytes16 uuid;
     }
+
+    /**
+    * @param data Swap Data
+    * @return receivedAmount Resulting token amount
+    */
+
     function simpleSwap(
         SimpleData memory data
     ) external payable returns (uint256 receivedAmount);
+
+    /**
+    * @dev Returns address for spender
+    */
     function getTokenTransferProxy() external view returns (address);
 }
 
@@ -75,6 +85,19 @@ interface IAirSwapV3 {
 }
 
 interface IOneInchRouter {
+
+    /**
+    * @notice OneInch
+    * @param srcToken Source token
+    * @param dstToken Destination Token
+    * @param srcReceiver Address that will receive swap funds
+    * @param dstReceiver The address to receive the output of the swap
+    * @param amount Amount of source tokens to swap
+    * @param minReturnAmount Minimal allowed returnAmount to make transaction commit
+    * @param flags Option for burn chi, wrap Eth, unwrap Eth ...
+    * @param permit Should contain valid permit that can be used in `IERC20Permit.permit` calls.
+    */
+
     struct SwapDescription {
         IERC20Upgradeable srcToken;
         IERC20Upgradeable dstToken;
@@ -86,8 +109,8 @@ interface IOneInchRouter {
         bytes permit;
     }
     /**
-    * @notice AirSwapV3
-    * @notice Performs a swap, delegating all calls encoded in `data` to `caller`. See tests for usage examples
+    * @notice OneInchSwap
+    * Performs a swap, delegating all calls encoded in `data` to `caller`. See tests for usage examples
     * @param caller Aggregation executor that executes calls described in `data`
     * @param desc Swap description
     * @param data Encoded calls that `caller` should execute in between of swaps
@@ -127,6 +150,14 @@ contract SwapRouter is OwnableUpgradeable, ReentrancyGuardUpgradeable {
     }
 
     receive() external payable {}
+
+    /**
+    * @notice Performs a swap
+    * @param aggregatorId Selected Dex for swapping
+    * @param tokenFrom Address of source token to be swapped
+    * @param amount Amount of source token
+    * @param data Encoded data for swapping
+    */ 
 
     function swap(string memory aggregatorId, address tokenFrom, uint256 amount, bytes memory data) external payable nonReentrant {
 
