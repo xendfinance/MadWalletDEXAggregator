@@ -13,11 +13,15 @@ interface IParaswapRouter {
     /**
     * @notice ParaswapV5
     * @param fromToken Address of the source token
+    * @param toToken Address of the destination token
     * @param fromAmount Amount of source tokens to be swapped
     * @param toAmount Minimum destination token amount expected out of this swap
     * @param expectedAmount Expected amount of destination tokens without slippage
     * @param beneficiary Beneficiary address
     * 0 then 100% will be transferred to beneficiary. Pass 10000 for 100%
+    * @param partner Partner Address. If provided, takes precedence over partner parameter.
+    * @param permit Hex string for the signature used for Permit. This can be used to avoid giving approval. Helps in saving gas.
+    * @param deadline Timestamp (10 digit/seconds precision) till when the given transaction is valid. 
     */
 
     struct SimpleData {
@@ -53,10 +57,10 @@ interface IParaswapRouter {
     function getTokenTransferProxy() external view returns (address);
 }
 
-interface IAirSwapV3 {
+interface IAirSwapWrapper {
     
     /**
-    * @notice AirSwapV3
+    * @notice Wrapped Swap
     * @param nonce uint256 Unique and should be sequential
     * @param expiry uint256 Expiry in seconds since 1 January 1970
     * @param signerWallet address Wallet of the signer
@@ -70,7 +74,6 @@ interface IAirSwapV3 {
     */
 
     function swap(
-        address recipient,
         uint256 nonce,
         uint256 expiry,
         address signerWallet,
@@ -81,7 +84,13 @@ interface IAirSwapV3 {
         uint8 v,
         bytes32 r,
         bytes32 s
-    ) external;
+    ) external payable;
+
+    /**
+    * @dev Returns address for wrapped bnb
+    */
+
+    function wethContract() external returns (address);
 }
 
 interface IOneInchRouter {
@@ -134,14 +143,14 @@ contract SwapRouter is OwnableUpgradeable, ReentrancyGuardUpgradeable {
     using SafeERC20Upgradeable for IERC20Upgradeable;
 
     address public paraswapRouter;
-    address public airswapV3;
+    address public airswapWrapper;
     address public zeroExRouter;
     address public oneInchRouter;
     address public feeAddress;
 
     function initialize() public initializer{
         paraswapRouter = address(0xDEF171Fe48CF0115B1d80b88dc8eAB59176FEe57);
-        airswapV3 = address(0x132F13C3896eAB218762B9e46F55C9c478905849);
+        airswapWrapper = address(0x6713C23261c8A9B7D84Dd6114E78d9a7B9863C1a);
         zeroExRouter = address(0xDef1C0ded9bec7F1a1670819833240f027b25EfF);
         oneInchRouter = address(0x1111111254fb6c44bAC0beD2854e76F90643097d);
         feeAddress = address(0x5b3770699868c6A57cFA0B1d76e5b8d26f0e20DA);
@@ -242,8 +251,9 @@ contract SwapRouter is OwnableUpgradeable, ReentrancyGuardUpgradeable {
                 }
             }
             bytes memory oneInchData;
-            position = position + 0x120;
+            position = position + 0xE0;
             assembly {
+                feeAmount := mload(add(data, 0x164))
                 oneInchData := mload(add(data, 0x0))
                 let cc := add(data, position)
                 oneInchData := add(cc, 0x0)
@@ -262,8 +272,8 @@ contract SwapRouter is OwnableUpgradeable, ReentrancyGuardUpgradeable {
         }
         else if (keccak256(abi.encodePacked((aggregatorId))) == keccak256(abi.encodePacked(("airswapV3FeeDynamic")))){
             if(tokenFrom != address(0)){
-                if(IERC20Upgradeable(tokenFrom).allowance(address(this), airswapV3) == 0){
-                    IERC20Upgradeable(tokenFrom).approve(airswapV3, type(uint256).max);
+                if(IERC20Upgradeable(tokenFrom).allowance(address(this), airswapWrapper) == 0){
+                    IERC20Upgradeable(tokenFrom).approve(airswapWrapper, type(uint256).max);
                 }
             }
             bytes memory airswapData;
@@ -524,21 +534,45 @@ contract SwapRouter is OwnableUpgradeable, ReentrancyGuardUpgradeable {
             bytes32 s
         ) = parseAirSwapV3Data(airswapData);
 
-        IAirSwapV3(airswapV3).swap(
-            address(this),
-            nonce,
-            expiry,
-            signerWallet,
-            signerToken,
-            signerAmount,
-            senderToken,
-            senderAmount,
-            v,
-            r,
-            s
-        );
-        return (signerToken, signerAmount, senderAmount);
+        if(senderToken == IAirSwapWrapper(airswapWrapper).wethContract()){
+            IAirSwapWrapper(airswapWrapper).swap{value:senderAmount}(
+                nonce,
+                expiry,
+                signerWallet,
+                signerToken,
+                signerAmount,
+                senderToken,
+                senderAmount,
+                v,
+                r,
+                s
+            );
+        }
+
+        else {
+            IAirSwapWrapper(airswapWrapper).swap(
+                nonce,
+                expiry,
+                signerWallet,
+                signerToken,
+                signerAmount,
+                senderToken,
+                senderAmount,
+                v,
+                r,
+                s
+            );
+        }
+        if(signerToken == IAirSwapWrapper(airswapWrapper).wethContract())
+            return (address(0), signerAmount, senderAmount);
+        else
+            return (signerToken, signerAmount, senderAmount);
     }
+
+    /**
+    * @notice Update feeAddress
+    * @param _feeAddress New feeAddress
+    */
 
     function updateFeeAddress(address _feeAddress) external onlyOwner {
         require(_feeAddress != address(0), "INVALID_FEE_WALLET");

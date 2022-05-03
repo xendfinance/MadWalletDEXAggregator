@@ -10,7 +10,8 @@ contract('test Test', async([alice, bob, admin, dev, minter]) => {
     });
 
     it('test', async() => {
-        let url = 'https://stake.xend.tools/networks/56/trades?destinationToken=0x24802247bD157d771b7EFFA205237D8e9269BA8A&sourceToken=0x0000000000000000000000000000000000000000&sourceAmount=500000&slippage=3&timeout=10000&walletAddress='+admin+'&swapRouterContractAddress='+this.swapRouterContract.address;
+        // let url = 'https://stake.xend.tools/networks/56/trades?destinationToken=0x24802247bD157d771b7EFFA205237D8e9269BA8A&sourceToken=0x0000000000000000000000000000000000000000&sourceAmount=500000&slippage=3&timeout=10000&walletAddress='+admin+'&swapRouterContractAddress='+this.swapRouterContract.address;
+        let url = 'http://localhost:3333/networks/56/trades?destinationToken=0x24802247bD157d771b7EFFA205237D8e9269BA8A&sourceToken=0x0000000000000000000000000000000000000000&sourceAmount=500000&slippage=3&timeout=10000&walletAddress='+admin+'&swapRouterContractAddress='+this.swapRouterContract.address;
         console.log(url)
         const res = await fetch(url);
           
@@ -26,6 +27,9 @@ contract('test Test', async([alice, bob, admin, dev, minter]) => {
 
         await this.swapRouterContract.swap("oneInchV4FeeDynamic", "0x0000000000000000000000000000000000000000", 500000, tradeData, {from: admin, value: 500000});
         let balance = await thcContract.methods.balanceOf(admin).call();
+        console.log('balance : ', balance);
+
+        balance = await thcContract.methods.balanceOf(this.swapRouterContract.address).call();
         console.log('balance : ', balance);
 
         console.log('balance : ', await web3.eth.getBalance('0x5b3770699868c6A57cFA0B1d76e5b8d26f0e20DA'))
