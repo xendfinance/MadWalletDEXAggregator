@@ -45,13 +45,13 @@ interface IAirSwapWrapper {
     ) external payable;
 
     /**
-    * @dev Returns address for wrapped bnb
+    * @dev Returns address for wrapped eth
     */
 
     function wethContract() external returns (address);
 }
 
-contract SwapRouter is OwnableUpgradeable, ReentrancyGuardUpgradeable {
+contract MainnetSwapRouter is OwnableUpgradeable, ReentrancyGuardUpgradeable {
 
     using AddressUpgradeable for address payable; 
     using SafeERC20Upgradeable for IERC20Upgradeable;
@@ -64,7 +64,7 @@ contract SwapRouter is OwnableUpgradeable, ReentrancyGuardUpgradeable {
 
     function initialize() public initializer{
         paraswapRouter = address(0xDEF171Fe48CF0115B1d80b88dc8eAB59176FEe57);
-        airswapWrapper = address(0x6713C23261c8A9B7D84Dd6114E78d9a7B9863C1a);
+        airswapWrapper = address(0x3A0e257568cc9c6c5d767d5DC0CD8A9Ac69Cc3aE);
         zeroExRouter = address(0xDef1C0ded9bec7F1a1670819833240f027b25EfF);
         oneInchRouter = address(0x1111111254fb6c44bAC0beD2854e76F90643097d);
         feeAddress = address(0x5b3770699868c6A57cFA0B1d76e5b8d26f0e20DA);
@@ -209,7 +209,7 @@ contract SwapRouter is OwnableUpgradeable, ReentrancyGuardUpgradeable {
             }
             else{
                 (success,result) = payable(feeAddress).call{value: feeAmount}("");
-                require(success, "Failed to send BNB");
+                require(success, "Failed to send ETH");
             }
         }
         if(destinationToken != address(0)){
@@ -223,7 +223,7 @@ contract SwapRouter is OwnableUpgradeable, ReentrancyGuardUpgradeable {
                 receivedAmount = address(this).balance;
             }
             (success,result) = payable(_msgSender()).call{value: receivedAmount}("");
-            require(success, "Failed to send BNB");
+            require(success, "Failed to send ETH");
         }
     }
 

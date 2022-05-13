@@ -16,6 +16,7 @@ contract('test Test', async([alice, bob, admin, dev, minter]) => {
     });
     it('test', async() => {
         // let url = 'https://stake.xend.tools/networks/56/trades?destinationToken=0xe9e7cea3dedca5984780bafc599bd69add087d56&sourceToken=0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d&sourceAmount=109484817855095221280&slippage=3&timeout=10000&walletAddress='+admin;
+        // let url = 'https://stake.xend.tools/networks/56/trades?destinationToken=0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d&sourceToken=0x0000000000000000000000000000000000000000&sourceAmount=5000000000000000000&slippage=3&timeout=10000&walletAddress='+admin+'&swapRouterContractAddress='+this.swapRouterContract.address;
         // let url = 'http://localhost:3333/networks/56/trades?destinationToken=0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d&sourceToken=0x55d398326f99059ff775485246999027b3197955&sourceAmount=10948481785509522128000&slippage=3&timeout=10000&walletAddress='+admin+'&swapRouterContractAddress='+this.swapRouterContract.address;
         let url = 'http://localhost:3333/networks/56/trades?destinationToken=0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d&sourceToken=0x0000000000000000000000000000000000000000&sourceAmount=5000000000000000000&slippage=3&timeout=10000&walletAddress='+admin+'&swapRouterContractAddress='+this.swapRouterContract.address;
         console.log(url)

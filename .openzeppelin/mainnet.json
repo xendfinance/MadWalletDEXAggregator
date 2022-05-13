@@ -1,0 +1,690 @@
+{
+  "manifestVersion": "3.2",
+  "admin": {
+    "address": "0xF1c8CEcB0de4b994A0CaDef7DFbADcd622520586",
+    "txHash": "0x8fad1c91b5ad6f8d088dc4823e02be56d2599a8115ed41017c6e48c2fa9d19c8"
+  },
+  "proxies": [
+    {
+      "address": "0x805B3960695B237fe84DF864C97F8cBab6D8390A",
+      "txHash": "0x8731d486fbbf65fe5c0ba5885f7cfbb22c5ea22dba0d4015f07384007fc0c4d5",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x4cb32A4E857FfA87d5937f3d03426CD76f9E59c1",
+      "txHash": "0x685ec1303a31a4bcde6c45f40b0306a6870efe405b2f53ef64e6e17974a75fd1",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x1522D285635522b42e11C9d5Fb0E46CE8B812086",
+      "txHash": "0x9ebd330ab6a7bf69175558746b739e0841c8891ade3b88f4c372d7a66b99be78",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x3A47224d0c5687E8d5985aC6Cd2e8399aBECCE02",
+      "txHash": "0xc4e36e8980a348180bab41ce832b2fd1616eb3d7273a46912cfcf57c96001991",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xE3A23383B533f16E4F065C1B9e787662593Ee2a7",
+      "txHash": "0xbe6c6d9889c21a21865f332510641fbf9a4f07fe175e15c72c751903e2a95ffc",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x877D4b2CE16C628fFBD57Ab040c167a3Dda163Ef",
+      "txHash": "0x990c86807850957e00980ade12be3521ddd59c5693e107ddfcf1e1029464f8c1",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x878ab4F42096Fa86de37aAD8572399dF91Fccd63",
+      "txHash": "0x9ff94b197049cd74acaf97ae27dfd2fad239f90598ed50ac93a44fc9f3bc66b8",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xb34b8C8aDF9e7f8592bB210e53DC0944F9616B71",
+      "txHash": "0xa753405e79fb64c56c22aee4ec6652f536e854e2d72c1c5f837f4401628836f9",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xA944b738E4bCEf2657ADa033e59022a3C53dF7C8",
+      "txHash": "0xebdfbf622352377d99e17be970af564e568bab2f5cbcc8ba42906c8f95509402",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xB73d117E134D34e89f9F59E99dbEc8Bf746F9B9c",
+      "txHash": "0x1eeb864f3f55f68351b45446376368cab1256736f0225c2bf4ae696ebdcde7be",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x26A13231EcB68433bCb8A4a9eeA4f23bc6c28D00",
+      "txHash": "0x1eec988ade1e897d19f88c8809047ef23580756fdd1cdeb1b079838120aea1ee",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xBf03091A09160AdB85616825c4ffADa36421cBF0",
+      "txHash": "0x65c2672710f44cf6a9a352c6e10032d81bd9adea229819a4de26ff66deaeafd3",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xfA704592E06D9Fb3549115EDF0d8437C690D73A5",
+      "txHash": "0xcab87a4a86a641781995af75abb33b0437d4b5d83c320df8045e817c2f7ee51c",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x780468f4FF8C04d146E79d37Af1e36dA04fCec5d",
+      "txHash": "0xda0a52da25a4023a2614e7ab95943a37bb2191d9859d7fd8181410fee6b94a6c",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xf59ED9F2Eb74Cc96fb84F84aB98976f903bEe2d0",
+      "txHash": "0x456e35e53540fc8b3de755b3e9d30ffd26fcb73848a4da86464c2604b0228d5e",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x731075CFcB164630D780BB9C5F886754D7939435",
+      "txHash": "0x50c6ee56f554964f849b9ccac7786f4849d22ffe01da53920f779b65bd8bc0e4",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x5cD9c7875639Aa08099197Ba8d4fBfB5291AF4d5",
+      "txHash": "0xdb19a24fb55bb7b36d79e56cee5d844f09bb2ba14fb33af09c7063303dbc49eb",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xff79030e6608c926b98Fb6a794b8000cB3207789",
+      "txHash": "0x77bd88e54261ee84bbf24ea40b52f2172711f1b0f3a505a17f1e179842c23fad",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x9e7FaA4627aeA088c19A240C1eEC9Cc6824dD50D",
+      "txHash": "0xa3d1642d2765647310c05c0784d12ecc57f77c37f355854133650076a35df31c",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x2102549024E0eaAda771E213F606E0c51d5738A6",
+      "txHash": "0x9e5b560370f5ff30ed5ec122d46e91151480cd031bc42a4885e7e5de0cef8e44",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xb98416285BAAD1e40647EE86F9256863BA8759c0",
+      "txHash": "0x20c888b9f96f1dd852995eae7b793f312d536b298b754d39b909675e81dc67ca",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xe5E3AeE226a5fFf433135Afc1c29763CD77f6b6b",
+      "txHash": "0xbf6c4d60f5ce313c379e3c4caf5275f4b44d102acf96192ba484d182881297e9",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x27A240eFc02a219769832A19456F7E16f6908509",
+      "txHash": "0x0adfdfa0d2e42742272f64c136ad96c650f2c6247b3bbf6e131ccb3c3d4d4a28",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x63Ae6245A1bC200bFc48EA5082D49F7a40b7D592",
+      "txHash": "0x1c614267fbc02e269861d718f8e393b567097c794220b7ca4b22597104ffedcf",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x02E9982849138637479A3e78cf6e6F037b346e7e",
+      "txHash": "0xc8c60a2cd7484de28f95c5ffac701d128e7e498444554db761e23d60c0e8b4bd",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x7aFE6e031726Ca8b88e6e5B895a373873a461108",
+      "txHash": "0x4072588e6513f89d0cbb6c3ba62cc493afcd5a1d116a256c7cee45c5a6debcdd",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xc0E8D21c6EcC1C4CDc86E9FB1c78C4d600d8EC03",
+      "txHash": "0x0ea55ddd1ca0a1d9e6105de8cba8d480d64c86eb2e887d4bd636adcf9d74a27d",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xBBa607762c6DB1Bf01c073938d5AfFC48f3b4BD8",
+      "txHash": "0x7fa68c5520a1f82e0d1c8e0fcd7495e1a55491d5f3f1ea70dfae4b16f7508e88",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x029dbFcbFa41984CBd3FE8Db91F9E56a0F1470E1",
+      "txHash": "0xef6dc301849801210addb638a2acaeca9a423f08b2a2cf3d3ff6abb423183e78",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x6c9c28A40Bf190767d5D6d7Ce8743566fa2Bc344",
+      "txHash": "0xc914c4225dfb4ac3a8ffcd28d277ef7b306d25b3a6bf8bed139038fd97d7d6be",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x4aF89FF84130d09Da971cc9Fd024024e7C6c1474",
+      "txHash": "0xc1f4b0026808ac7832a522f6583cf69b9664161d9bfe48f1ed269c36937386a0",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x9c5FeaE29E1C334A576787674B580c47308c98b6",
+      "txHash": "0x554c4cd5777515a8053fa2bfaa82ce979bee355da53090a88036223ec7160c5e",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x76bC3e0308aAE0952C7154cf9D47c2c37A6A03ba",
+      "txHash": "0xe90f91be7a39f33cf7cdc7c2162aef22a9bd099cb73bad98ccdaf1272a7c709d",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x3FF48A10904da1AD7ee38d1B8071d9c37fA4f99A",
+      "txHash": "0x2a0be098db4fb5b198ccf888c4eb3190b6d306f028e63857e7dd73140ebe811b",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x9E4bEf1908Fe5a9513DC6135b8dFdBeC0CE9E4Ac",
+      "txHash": "0x4f8aac712d452f652b613f35475eeef390044c098d3db64927074f52376c38b5",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x7B16D4a6e869456559E97B817E10Acd7d17cfbe4",
+      "txHash": "0x19b20e05b54d215943c2289fc37940d5c339034e8693e177a952c050ef05cd2a",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xBC7CA21c561665B7EA0cb9da2F9006620CcD2080",
+      "txHash": "0xbc46c59daea4fa4ff1a47f8bb389322a76bad8394096d815cde7965756790e22",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x919b161C6b1FBfC4350C52648F4f96c3F08098d8",
+      "txHash": "0x922c5a74f381aafc3ea3644a5c6c984525fc23f48cd02d132e0c8922eef2b399",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xb2A1560f50A47575C6c551C23DB6568EA378DdF2",
+      "txHash": "0x8b382da1c8b2bed5a356a61f0d5021763621205c4019ccb88cbfa88815f0174a",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x524C72d7aBaA156537655ED79dF36c90f83f6d49",
+      "txHash": "0xdb7ad188749a99c37a9111d1eedeafd975a54f86404835a4978d4c45c0c2b3e0",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x4e2145a215758b50BF06E1c00bFDbeF0a942cC2e",
+      "txHash": "0x3282dc63a3752fe54c69e82603a0a1931b92f909d0ca6e7626265f9d2f3e95e1",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xF1174e38789F2c19Ea69D26a7a4814aA4e51FfeA",
+      "txHash": "0xdfba0f8afbc187c869847c8328f556add4deb921db1b87ebe7d1e78dbe7f66e7",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x33E9A3486ACA1c90A25adA41FD310160990754ef",
+      "txHash": "0x94333dc016c5be7d0ec92ff12ea5ba06a88abad6cae5f7862c47cc6a6b0a9af1",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x6CC33880829CcA06Aac66e2cf403C71E61233D94",
+      "txHash": "0xcc3bb79756ab99cb60a2703d7c2e7ac3a27f1ee4a5dee4661b89819db003eebe",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xc0b4348De72d60558f9979b59C866A3e81B7E5FD",
+      "txHash": "0xc7e15c5c4d250e2b9e25f32414e153de7864e9ef71c6431e5593b1e5b0b6d7cc",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x8083A8f7E56Bdcd35a0a327ec2114990623edE61",
+      "txHash": "0x283f0701802829bf68877de5274efb18277c379bb1eb43870e8589fc9e5378c4",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x6546EB1628CE9080f605b462d5Fb0F52510F4bE0",
+      "txHash": "0x4e3ebcef38da6d5da2e3b0fa173a890deaecfe7551a46884bc82731c4bdcc39b",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x6e7E31AE7346Ce6040054BF222Ca4A860e6F3F87",
+      "txHash": "0x2f481beda7a766d61fe7ff74ba68a96147daff3f1f568b1f2080d9a907649458",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xa29ecf60D4d466Fa787386f4b703162e23D26f46",
+      "txHash": "0x46fb88b7d4a49b092f8fa19c85c4fce6705117ab7421a9e24f66de5bf5dd2ae1",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x263337c40529Ee8f448059cD1298D3Da9b8E0a42",
+      "txHash": "0x8ad2ee43c51f99e9b862033d5b1a1b6ebc6a1ce0388255b10bd7807381bdce65",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x5C3d39307FC54278D2Ed92fEB2066aeBC2c8B5e4",
+      "txHash": "0x3ba4c1e4347e157bd823543f8c22c179a78e05a0e9edf749287c221714c6d4fe",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x967dd7460a7b723148a3143D9295654116b7c6ba",
+      "txHash": "0xa608baf9a7f9ea48fe276bb87ceb52d069e2b439e8ead90346dedf47b524ff74",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x6DDd89b8eb0B9F1CbbEcc46B53134B7F5c9B0939",
+      "txHash": "0x1f3042089642cedf0c13720a6fd91386b232b9db73565105ebe5fab999c0b3b6",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xF74C4bF65b5a4268aBC9Ef2DB5d48C9EAD12FA9e",
+      "txHash": "0x60c4c5b23b0a94652e5d06ec84d1b92933584217a56d5bb5bb6b99d151a72db7",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x74d9DA751453D81eC47e59EE2CB7AF89f69d4CA2",
+      "txHash": "0x7180871421b6d25eee5f58ec736c5109cc961268cfad7afebee87e9c3f1f7c18",
+      "kind": "transparent"
+    }
+  ],
+  "impls": {
+    "ebabfc052f90b67d92571112aeed2ab0202858c56228100d89309b976a022f1b": {
+      "address": "0x8f8Bffcc3FDbfa345D00EfD7E5965a9e1660A694",
+      "txHash": "0x0eb47b4bb1d10c90be022d21dd2d70c7bb174dd105d89e6c5dd44275aa5f3ecd",
+      "layout": {
+        "storage": [
+          {
+            "contract": "Initializable",
+            "label": "_initialized",
+            "type": "t_uint8",
+            "src": "..\\@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:62",
+            "retypedFrom": "bool"
+          },
+          {
+            "contract": "Initializable",
+            "label": "_initializing",
+            "type": "t_bool",
+            "src": "..\\@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:67"
+          },
+          {
+            "contract": "ContextUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "..\\@openzeppelin\\contracts-upgradeable\\utils\\ContextUpgradeable.sol:36"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "_owner",
+            "type": "t_address",
+            "src": "..\\@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:22"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "..\\@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:87"
+          },
+          {
+            "contract": "ReentrancyGuardUpgradeable",
+            "label": "_status",
+            "type": "t_uint256",
+            "src": "..\\@openzeppelin\\contracts-upgradeable\\security\\ReentrancyGuardUpgradeable.sol:38"
+          },
+          {
+            "contract": "ReentrancyGuardUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "..\\@openzeppelin\\contracts-upgradeable\\security\\ReentrancyGuardUpgradeable.sol:74"
+          },
+          {
+            "contract": "SwapRouter",
+            "label": "paraswapRouter",
+            "type": "t_address",
+            "src": "..\\project:\\contracts\\SwapRouter.sol:103"
+          },
+          {
+            "contract": "SwapRouter",
+            "label": "airswapWrapper",
+            "type": "t_address",
+            "src": "..\\project:\\contracts\\SwapRouter.sol:104"
+          },
+          {
+            "contract": "SwapRouter",
+            "label": "zeroExRouter",
+            "type": "t_address",
+            "src": "..\\project:\\contracts\\SwapRouter.sol:105"
+          },
+          {
+            "contract": "SwapRouter",
+            "label": "oneInchRouter",
+            "type": "t_address",
+            "src": "..\\project:\\contracts\\SwapRouter.sol:106"
+          },
+          {
+            "contract": "SwapRouter",
+            "label": "feeAddress",
+            "type": "t_address",
+            "src": "..\\project:\\contracts\\SwapRouter.sol:107"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address"
+          },
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          },
+          "t_uint8": {
+            "label": "uint8"
+          },
+          "t_bool": {
+            "label": "bool"
+          }
+        }
+      }
+    },
+    "ec27fd287361813beb7b2705db417bd683623d98c3e401643574a51f1fcd613e": {
+      "address": "0x51d258F2d18BE070C9eCE460b975B4D02D165F85",
+      "txHash": "0xd4e58b60a6666edcbec7ee2ab40087122cf6261d195171671e7d2714ee255ee9",
+      "layout": {
+        "storage": [
+          {
+            "contract": "Initializable",
+            "label": "_initialized",
+            "type": "t_uint8",
+            "src": "..\\@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:62",
+            "retypedFrom": "bool"
+          },
+          {
+            "contract": "Initializable",
+            "label": "_initializing",
+            "type": "t_bool",
+            "src": "..\\@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:67"
+          },
+          {
+            "contract": "ContextUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "..\\@openzeppelin\\contracts-upgradeable\\utils\\ContextUpgradeable.sol:36"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "_owner",
+            "type": "t_address",
+            "src": "..\\@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:22"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "..\\@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:87"
+          },
+          {
+            "contract": "ReentrancyGuardUpgradeable",
+            "label": "_status",
+            "type": "t_uint256",
+            "src": "..\\@openzeppelin\\contracts-upgradeable\\security\\ReentrancyGuardUpgradeable.sol:38"
+          },
+          {
+            "contract": "ReentrancyGuardUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "..\\@openzeppelin\\contracts-upgradeable\\security\\ReentrancyGuardUpgradeable.sol:74"
+          },
+          {
+            "contract": "MainnetSwapRouter",
+            "label": "paraswapRouter",
+            "type": "t_address",
+            "src": "..\\project:\\contracts\\MainnetSwapRouter.sol:103"
+          },
+          {
+            "contract": "MainnetSwapRouter",
+            "label": "airswapWrapper",
+            "type": "t_address",
+            "src": "..\\project:\\contracts\\MainnetSwapRouter.sol:104"
+          },
+          {
+            "contract": "MainnetSwapRouter",
+            "label": "zeroExRouter",
+            "type": "t_address",
+            "src": "..\\project:\\contracts\\MainnetSwapRouter.sol:105"
+          },
+          {
+            "contract": "MainnetSwapRouter",
+            "label": "oneInchRouter",
+            "type": "t_address",
+            "src": "..\\project:\\contracts\\MainnetSwapRouter.sol:106"
+          },
+          {
+            "contract": "MainnetSwapRouter",
+            "label": "feeAddress",
+            "type": "t_address",
+            "src": "..\\project:\\contracts\\MainnetSwapRouter.sol:107"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address"
+          },
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          },
+          "t_uint8": {
+            "label": "uint8"
+          },
+          "t_bool": {
+            "label": "bool"
+          }
+        }
+      }
+    },
+    "d028f3b9ca9840061586374ae9ac3c29b8c9e089e04266de85796858e1510c03": {
+      "address": "0xe43Ad8Db2647B79e27Ea5060D643bCeD0C7328ee",
+      "txHash": "0xd4faf843facc0a4d44ae43b0ac1e45f129d2793f2ccfe1d91cb027ce88112717",
+      "layout": {
+        "storage": [
+          {
+            "contract": "Initializable",
+            "label": "_initialized",
+            "type": "t_uint8",
+            "src": "..\\@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:62",
+            "retypedFrom": "bool"
+          },
+          {
+            "contract": "Initializable",
+            "label": "_initializing",
+            "type": "t_bool",
+            "src": "..\\@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:67"
+          },
+          {
+            "contract": "ContextUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "..\\@openzeppelin\\contracts-upgradeable\\utils\\ContextUpgradeable.sol:36"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "_owner",
+            "type": "t_address",
+            "src": "..\\@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:22"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "..\\@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:87"
+          },
+          {
+            "contract": "ReentrancyGuardUpgradeable",
+            "label": "_status",
+            "type": "t_uint256",
+            "src": "..\\@openzeppelin\\contracts-upgradeable\\security\\ReentrancyGuardUpgradeable.sol:38"
+          },
+          {
+            "contract": "ReentrancyGuardUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "..\\@openzeppelin\\contracts-upgradeable\\security\\ReentrancyGuardUpgradeable.sol:74"
+          },
+          {
+            "contract": "SwapRouter",
+            "label": "paraswapRouter",
+            "type": "t_address",
+            "src": "..\\project:\\contracts\\SwapRouter.sol:59"
+          },
+          {
+            "contract": "SwapRouter",
+            "label": "airswapWrapper",
+            "type": "t_address",
+            "src": "..\\project:\\contracts\\SwapRouter.sol:60"
+          },
+          {
+            "contract": "SwapRouter",
+            "label": "zeroExRouter",
+            "type": "t_address",
+            "src": "..\\project:\\contracts\\SwapRouter.sol:61"
+          },
+          {
+            "contract": "SwapRouter",
+            "label": "oneInchRouter",
+            "type": "t_address",
+            "src": "..\\project:\\contracts\\SwapRouter.sol:62"
+          },
+          {
+            "contract": "SwapRouter",
+            "label": "feeAddress",
+            "type": "t_address",
+            "src": "..\\project:\\contracts\\SwapRouter.sol:63"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address"
+          },
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          },
+          "t_uint8": {
+            "label": "uint8"
+          },
+          "t_bool": {
+            "label": "bool"
+          }
+        }
+      }
+    },
+    "8df72af8007a8e12afafc782d3a6175f6f48eb3d388976f07a103fa6cf487b40": {
+      "address": "0x36F700317b685255AE4f0356b9897e227D0e477a",
+      "txHash": "0x436fd31b5448a33c595d5c732780c928032edd0b82945f79ba5955e1c9c03ce5",
+      "layout": {
+        "storage": [
+          {
+            "contract": "Initializable",
+            "label": "_initialized",
+            "type": "t_uint8",
+            "src": "..\\@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:62",
+            "retypedFrom": "bool"
+          },
+          {
+            "contract": "Initializable",
+            "label": "_initializing",
+            "type": "t_bool",
+            "src": "..\\@openzeppelin\\contracts-upgradeable\\proxy\\utils\\Initializable.sol:67"
+          },
+          {
+            "contract": "ContextUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "..\\@openzeppelin\\contracts-upgradeable\\utils\\ContextUpgradeable.sol:36"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "_owner",
+            "type": "t_address",
+            "src": "..\\@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:22"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "..\\@openzeppelin\\contracts-upgradeable\\access\\OwnableUpgradeable.sol:87"
+          },
+          {
+            "contract": "ReentrancyGuardUpgradeable",
+            "label": "_status",
+            "type": "t_uint256",
+            "src": "..\\@openzeppelin\\contracts-upgradeable\\security\\ReentrancyGuardUpgradeable.sol:38"
+          },
+          {
+            "contract": "ReentrancyGuardUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "..\\@openzeppelin\\contracts-upgradeable\\security\\ReentrancyGuardUpgradeable.sol:74"
+          },
+          {
+            "contract": "MainnetSwapRouter",
+            "label": "paraswapRouter",
+            "type": "t_address",
+            "src": "..\\project:\\contracts\\MainnetSwapRouter.sol:59"
+          },
+          {
+            "contract": "MainnetSwapRouter",
+            "label": "airswapWrapper",
+            "type": "t_address",
+            "src": "..\\project:\\contracts\\MainnetSwapRouter.sol:60"
+          },
+          {
+            "contract": "MainnetSwapRouter",
+            "label": "zeroExRouter",
+            "type": "t_address",
+            "src": "..\\project:\\contracts\\MainnetSwapRouter.sol:61"
+          },
+          {
+            "contract": "MainnetSwapRouter",
+            "label": "oneInchRouter",
+            "type": "t_address",
+            "src": "..\\project:\\contracts\\MainnetSwapRouter.sol:62"
+          },
+          {
+            "contract": "MainnetSwapRouter",
+            "label": "feeAddress",
+            "type": "t_address",
+            "src": "..\\project:\\contracts\\MainnetSwapRouter.sol:63"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address"
+          },
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          },
+          "t_uint8": {
+            "label": "uint8"
+          },
+          "t_bool": {
+            "label": "bool"
+          }
+        }
+      }
+    }
+  }
+}
