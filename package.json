@@ -23,10 +23,10 @@
     "dotenv": "^16.0.0",
     "ethereumjs-util": "^7.1.4",
     "ethers": "^5.6.2",
-    "truffle-hdwallet-provider": "^1.0.17",
-    "truffle-plugin-verify": "^0.5.9"
+    "truffle-hdwallet-provider": "^1.0.17"
   },
   "devDependencies": {
-    "@0x/typescript-typings": "^5.2.2"
+    "@0x/typescript-typings": "^5.2.2",
+    "truffle-plugin-verify": "^0.5.25"
   }
 }

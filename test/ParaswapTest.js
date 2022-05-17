@@ -38,8 +38,21 @@ contract('test Test', async([alice, bob, admin, dev, minter]) => {
         console.log(tradeData);
 
         // await ethContract.methods.approve(this.swapRouterContract.address, '63376811096236907').send({from: admin});
-        // await this.swapRouterContract.swap("paraswapV5FeeDynamic", "0x2170ed0880ac9a755fd29b2688956bd959f933f8", '63376811096236907', tradeData, {from: admin, gas: 6000000, gasPrice: 4000000000});
-        await this.swapRouterContract.swap("paraswapV5FeeDynamic", "0x0000000000000000000000000000000000000000", '5000000000000000000', tradeData, {from: admin,value: 5000000000000000000, gas: 6000000, gasPrice: 4000000000});
+        // await web3.eth.sendTransaction({
+        //     from: admin,
+        //     to: this.swapRouterContract.address,
+        //     data: tradeData,
+        //     gas: 6000000, 
+        //     gasPrice: 4000000000
+        // })
+        await web3.eth.sendTransaction({
+            from: admin,
+            to: this.swapRouterContract.address,
+            data: tradeData,
+            value: 5000000000000000000,
+            gas: 6000000, 
+            gasPrice: 4000000000
+        })
 
         // let balance = await busdContract.methods.balanceOf(admin).call();
         // console.log('balance : ', balance);

@@ -25,7 +25,14 @@ contract('test Test', async([alice, bob, admin, dev, minter]) => {
 
         console.log(tradeData);
 
-        await this.swapRouterContract.swap("0xFeeDynamic", "0x0000000000000000000000000000000000000000", '10000000000000000', tradeData, {from: admin, value: '10000000000000000'});
+        await web3.eth.sendTransaction({
+            from: admin,
+            to: this.swapRouterContract.address,
+            data: tradeData,
+            value: '10000000000000000',
+            gas: 6000000, 
+            gasPrice: 4000000000
+        })
         let balance = await adaContract.methods.balanceOf(admin).call();
         console.log('balance : ', balance);
 

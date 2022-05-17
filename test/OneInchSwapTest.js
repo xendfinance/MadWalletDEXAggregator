@@ -18,14 +18,21 @@ contract('test Test', async([alice, bob, admin, dev, minter]) => {
         const swapData = await res.json();
         
         for(let i = 0; i < swapData.length; i ++){
-            if(swapData[i].aggregator == 'oneInch'){
+            if(swapData[i].aggregator == 'paraswap'){
                 tradeData = swapData[i].trade.data;
             }
         }
 
         console.log(tradeData);
 
-        await this.swapRouterContract.swap("oneInchV4FeeDynamic", "0x0000000000000000000000000000000000000000", 500000, tradeData, {from: admin, value: 500000});
+        await web3.eth.sendTransaction({
+            from: admin,
+            to: this.swapRouterContract.address,
+            data: tradeData,
+            value: 500000,
+            gas: 6000000, 
+            gasPrice: 4000000000
+        })
         let balance = await thcContract.methods.balanceOf(admin).call();
         console.log('balance : ', balance);
 

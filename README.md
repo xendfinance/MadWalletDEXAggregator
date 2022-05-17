@@ -30,7 +30,7 @@ Swapping is doing with parsed data on selected swap router.
 
 #### 1. AirSwapV3
 ganache-cli -f https://bsc.getblock.io/mainnet/?api_key=API_KEY -m "hidden moral pulp timber famous opinion melt any praise keen tissue aware" -l 100000000 -i 1 --chainId 56 -u 0x72a53cdbbcc1b9efa39c834a540550e23463aacb --allowUnlimitedContractSize
-https://github.com/xendfinance/MadWalletDEXAggregator/tree/main/test/AirSwapLightTest.js
+https://github.com/xendfinance/MadWalletDEXAggregator/tree/main/test/AirSwapV3Test.js
 
 #### 2. OneInchSwap
 ganache-cli -f https://bsc.getblock.io/mainnet/?api_key=API_KEY -m "hidden moral pulp timber famous opinion melt any praise keen tissue aware" -l 100000000 -i 1 --chainId 56 --allowUnlimitedContractSize

@@ -93,6 +93,15 @@ module.exports = {
       gas: 0xfffffffffff, // <-- Use this high gas value
       gasPrice: 0x01      // <-- Use this low gas price
     },
+    testnet: {
+      provider: () => new HDWalletProvider(process.env.PK, "https://data-seed-prebsc-1-s1.binance.org:8545/"),
+      network_id: 97,
+      confirmations: 2,
+      gasPrice: 20000000000,
+      timeoutBlocks: 10000,
+      skipDryRun: true,
+      networkCheckTimeout:999999
+    },
   },
 
   // Set default mocha options here, use special reporters etc.
@@ -113,5 +122,10 @@ module.exports = {
       //  evmVersion: "byzantium"
       }
     }
-  }
+  },
+  // api_keys: {
+  //   etherscan: '',
+  //   bscscan: ''
+  // },
+  // plugins: ['truffle-plugin-verify']
 }

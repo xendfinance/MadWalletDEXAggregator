@@ -15,42 +15,6 @@ interface IParaswapRouter {
     function getTokenTransferProxy() external view returns (address);
 }
 
-interface IAirSwapWrapper {
-    
-    /**
-    * @notice Wrapped Swap
-    * @param nonce uint256 Unique and should be sequential
-    * @param expiry uint256 Expiry in seconds since 1 January 1970
-    * @param signerWallet address Wallet of the signer
-    * @param signerToken address ERC20 token transferred from the signer
-    * @param signerAmount uint256 Amount transferred from the signer
-    * @param senderToken address ERC20 token transferred from the sender
-    * @param senderAmount uint256 Amount transferred from the sender
-    * @param v uint8 "v" value of the ECDSA signature
-    * @param r bytes32 "r" value of the ECDSA signature
-    * @param s bytes32 "s" value of the ECDSA signature
-    */
-
-    function swap(
-        uint256 nonce,
-        uint256 expiry,
-        address signerWallet,
-        address signerToken,
-        uint256 signerAmount,
-        address senderToken,
-        uint256 senderAmount,
-        uint8 v,
-        bytes32 r,
-        bytes32 s
-    ) external payable;
-
-    /**
-    * @dev Returns address for wrapped eth
-    */
-
-    function wethContract() external returns (address);
-}
-
 contract MainnetSwapRouter is OwnableUpgradeable, ReentrancyGuardUpgradeable {
 
     using AddressUpgradeable for address payable; 
@@ -84,18 +48,18 @@ contract MainnetSwapRouter is OwnableUpgradeable, ReentrancyGuardUpgradeable {
 
     function swap(string memory aggregatorId, address tokenFrom, uint256 amount, bytes memory data) external payable nonReentrant {
 
-        uint256 position;
         uint256 receivedAmount;
         uint256 feeAmount;
         address destinationToken;
         uint256 swappingTokenAmount;
-
-        position = 0xE4;
+        bool success;
+        bytes memory result;
 
         assembly {
-            destinationToken := mload(add(data, add(position, 0x40)))
-            swappingTokenAmount := mload(add(data, add(position, 0x60)))
-            feeAmount := mload(add(data, add(position, 0x80)))
+            destinationToken := mload(add(data, 0x40))
+            swappingTokenAmount := mload(add(data, 0x60))
+            receivedAmount := mload(add(data, 0x80))
+            feeAmount := mload(add(data, 0xA0))
         }
 
         if(tokenFrom != address(0)){
@@ -109,25 +73,18 @@ contract MainnetSwapRouter is OwnableUpgradeable, ReentrancyGuardUpgradeable {
                 }
             }
             bytes memory exSwapData;
-            position = position + 0xC0;
             assembly {
                 exSwapData := mload(add(data, 0x0))
-                let cc := add(data, position)
+                let cc := add(data, 0xE0)
                 exSwapData := add(cc, 0x0)
             }
-            bool success;
-            bytes memory result;
             if(tokenFrom != address(0)){
                 (success, result) = zeroExRouter.call(exSwapData);
             }
             else{
                 (success, result) = zeroExRouter.call{value:swappingTokenAmount}(exSwapData);
             }
-            if(success){
-                assembly {
-                    receivedAmount := mload(add(result, 0x20))
-                }
-            }
+            require(success, "Failed to swap");
         }
         else if (keccak256(abi.encodePacked((aggregatorId))) == keccak256(abi.encodePacked(("oneInchV4FeeDynamic")))){
             if(tokenFrom != address(0)){
@@ -136,25 +93,18 @@ contract MainnetSwapRouter is OwnableUpgradeable, ReentrancyGuardUpgradeable {
                 }
             }
             bytes memory oneInchData;
-            position = position + 0xC0;
             assembly {
                 oneInchData := mload(add(data, 0x0))
-                let cc := add(data, position)
+                let cc := add(data, 0xE0)
                 oneInchData := add(cc, 0x0)
             }
-            bool success;
-            bytes memory result;
             if(tokenFrom != address(0)){
                 (success, result) = oneInchRouter.call(oneInchData);
             }
             else{
                 (success, result) = oneInchRouter.call{value:swappingTokenAmount}(oneInchData);
             }
-            if(success){
-                assembly {
-                    receivedAmount := mload(add(result, 0x20))
-                }
-            }
+            require(success, "Failed to swap");
         }
         else if (keccak256(abi.encodePacked((aggregatorId))) == keccak256(abi.encodePacked(("airswapV3FeeDynamic")))){
             if(tokenFrom != address(0)){
@@ -163,14 +113,18 @@ contract MainnetSwapRouter is OwnableUpgradeable, ReentrancyGuardUpgradeable {
                 }
             }
             bytes memory airswapData;
-            position = position + 0xC0;
             assembly {
                 airswapData := mload(add(data, 0x0))
-                let cc := add(data, 0x1A4)
+                let cc := add(data, 0xE0)
                 airswapData := add(cc, 0x0)
             }
-            (uint256 signerAmount) = airSwapV3Swap(airswapData);
-            receivedAmount = signerAmount;
+            if(tokenFrom != address(0)){
+                (success, result) = airswapWrapper.call(airswapData);
+            }
+            else{
+                (success, result) = airswapWrapper.call{value:swappingTokenAmount}(airswapData);
+            }
+            require(success, "Failed to swap");
         }
         else if (keccak256(abi.encodePacked((aggregatorId))) == keccak256(abi.encodePacked(("paraswapV5FeeDynamic")))){
             if(tokenFrom != address(0)){
@@ -180,29 +134,20 @@ contract MainnetSwapRouter is OwnableUpgradeable, ReentrancyGuardUpgradeable {
                 }
             }
             bytes memory paraswapData;
-            position = position + 0xC0;
             assembly {
                 paraswapData := mload(add(data, 0x0))
-                let cc := add(data, position)
+                let cc := add(data, 0xE0)
                 paraswapData := add(cc, 0x0)
             }
-            bool success;
-            bytes memory result;
             if(tokenFrom != address(0)){
                 (success, result) = paraswapRouter.call(paraswapData);
             }
             else{
                 (success, result) = paraswapRouter.call{value:swappingTokenAmount}(paraswapData);
             }
-            if(success){
-                assembly {
-                    receivedAmount := mload(add(result, 0x20))
-                }
-            }
+            require(success, "Failed to swap");
         }
 
-        bool success;
-        bytes memory result;
         if(swappingTokenAmount < amount){
             if(tokenFrom != address(0)){
                 IERC20Upgradeable(tokenFrom).safeTransfer(feeAddress, feeAmount);
@@ -225,78 +170,6 @@ contract MainnetSwapRouter is OwnableUpgradeable, ReentrancyGuardUpgradeable {
             (success,result) = payable(_msgSender()).call{value: receivedAmount}("");
             require(success, "Failed to send ETH");
         }
-    }
-
-    function parseAirSwapV3Data(bytes memory data) internal pure returns(
-        uint256 nonce,
-        uint256 expiry,
-        address signerWallet,
-        address signerToken,
-        uint256 signerAmount,
-        address senderToken,
-        uint256 senderAmount,
-        uint8 v,
-        bytes32 r,
-        bytes32 s
-    ){
-        assembly {
-            nonce := mload(add(data, 0x20))
-            expiry := mload(add(data, 0x40))
-            signerWallet := mload(add(data, 0x60))
-            signerToken := mload(add(data, 0x80))
-            signerAmount := mload(add(data, 0xA0))
-            senderToken := mload(add(data, 0xC0))
-            senderAmount := mload(add(data, 0xE0))
-            v := mload(add(data, 0x100))
-            r := mload(add(data, 0x120))
-            s := mload(add(data, 0x140))
-        }
-    }
-
-    function airSwapV3Swap(bytes memory airswapData) internal returns(uint256){
-        (
-            uint256 nonce,
-            uint256 expiry,
-            address signerWallet,
-            address signerToken,
-            uint256 signerAmount,
-            address senderToken,
-            uint256 senderAmount,
-            uint8 v,
-            bytes32 r,
-            bytes32 s
-        ) = parseAirSwapV3Data(airswapData);
-
-        if(senderToken == IAirSwapWrapper(airswapWrapper).wethContract()){
-            IAirSwapWrapper(airswapWrapper).swap{value:senderAmount}(
-                nonce,
-                expiry,
-                signerWallet,
-                signerToken,
-                signerAmount,
-                senderToken,
-                senderAmount,
-                v,
-                r,
-                s
-            );
-        }
-
-        else {
-            IAirSwapWrapper(airswapWrapper).swap(
-                nonce,
-                expiry,
-                signerWallet,
-                signerToken,
-                signerAmount,
-                senderToken,
-                senderAmount,
-                v,
-                r,
-                s
-            );
-        }
-        return signerAmount;
     }
 
     /**
