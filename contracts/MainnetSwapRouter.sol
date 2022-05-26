@@ -84,7 +84,6 @@ contract MainnetSwapRouter is OwnableUpgradeable, ReentrancyGuardUpgradeable {
             else{
                 (success, result) = zeroExRouter.call{value:swappingTokenAmount}(exSwapData);
             }
-            require(success, "Failed to swap");
         }
         else if (keccak256(abi.encodePacked((aggregatorId))) == keccak256(abi.encodePacked(("oneInchV4FeeDynamic")))){
             if(tokenFrom != address(0)){
@@ -104,7 +103,6 @@ contract MainnetSwapRouter is OwnableUpgradeable, ReentrancyGuardUpgradeable {
             else{
                 (success, result) = oneInchRouter.call{value:swappingTokenAmount}(oneInchData);
             }
-            require(success, "Failed to swap");
         }
         else if (keccak256(abi.encodePacked((aggregatorId))) == keccak256(abi.encodePacked(("airswapV3FeeDynamic")))){
             if(tokenFrom != address(0)){
@@ -124,7 +122,6 @@ contract MainnetSwapRouter is OwnableUpgradeable, ReentrancyGuardUpgradeable {
             else{
                 (success, result) = airswapWrapper.call{value:swappingTokenAmount}(airswapData);
             }
-            require(success, "Failed to swap");
         }
         else if (keccak256(abi.encodePacked((aggregatorId))) == keccak256(abi.encodePacked(("paraswapV5FeeDynamic")))){
             if(tokenFrom != address(0)){
@@ -145,8 +142,9 @@ contract MainnetSwapRouter is OwnableUpgradeable, ReentrancyGuardUpgradeable {
             else{
                 (success, result) = paraswapRouter.call{value:swappingTokenAmount}(paraswapData);
             }
-            require(success, "Failed to swap");
         }
+        
+        require(success, "Failed to swap");
 
         if(swappingTokenAmount < amount){
             if(tokenFrom != address(0)){
