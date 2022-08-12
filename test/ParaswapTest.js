@@ -13,17 +13,18 @@ const busdContract = new web3.eth.Contract(busdABI, busdAddress);
 contract('test Test', async([alice, bob, admin, dev, minter]) => {
     before(async () => {
         this.swapRouterContract = await SwapRouter.deployed();
-        // await ethContract.methods.transfer(admin, '63376811096236907').send({from: tokenOwner});
+        await ethContract.methods.transfer(admin, '63376811096236907').send({from: tokenOwner});
     });
 
     it('test', async() => {
-        // let url = 'https://stake.xend.tools/networks/56/trades?destinationToken=0xe9e7cea3dedca5984780bafc599bd69add087d56&sourceToken=0x2170ed0880ac9a755fd29b2688956bd959f933f8&sourceAmount=63376811096236907&slippage=3&timeout=10000&walletAddress='+admin+'&swapRouterContractAddress='+this.swapRouterContract.address;
+        let url = 'https://stake.xend.tools/networks/56/trades?destinationToken=0xe9e7cea3dedca5984780bafc599bd69add087d56&sourceToken=0x2170ed0880ac9a755fd29b2688956bd959f933f8&sourceAmount=63376811096236907&slippage=3&timeout=10000&walletAddress='+admin+'&swapRouterContractAddress='+this.swapRouterContract.address;
 
         // let url = 'http://localhost:3333/networks/56/trades?destinationToken=0xe9e7cea3dedca5984780bafc599bd69add087d56&sourceToken=0x2170ed0880ac9a755fd29b2688956bd959f933f8&sourceAmount=63376811096236907&slippage=3&timeout=10000&walletAddress='+admin+'&swapRouterContractAddress='+this.swapRouterContract.address;
 
         // let url = 'https://stake.xend.tools/networks/56/trades?destinationToken=0x24802247bD157d771b7EFFA205237D8e9269BA8A&sourceToken=0x0000000000000000000000000000000000000000&sourceAmount=500000&slippage=3&timeout=10000&walletAddress='+admin+'&swapRouterContractAddress='+this.swapRouterContract.address;
 
-        let url = 'http://localhost:3333/networks/56/trades?destinationToken=0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d&sourceToken=0x0000000000000000000000000000000000000000&sourceAmount=5000000000000000000&slippage=3&timeout=10000&walletAddress='+admin+'&swapRouterContractAddress='+this.swapRouterContract.address;
+        // let url = 'http://localhost:3333/networks/56/trades?destinationToken=0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d&sourceToken=0x0000000000000000000000000000000000000000&sourceAmount=5000000000000000000&slippage=3&timeout=10000&walletAddress='+admin+'&swapRouterContractAddress='+this.swapRouterContract.address;
+        // let url = 'https://stake.xend.tools/networks/56/trades?destinationToken=0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d&sourceToken=0x0000000000000000000000000000000000000000&sourceAmount=5000000000000000000&slippage=3&timeout=10000&walletAddress='+admin+'&swapRouterContractAddress='+this.swapRouterContract.address;
         console.log(url)
         const res = await fetch(url);
           
@@ -37,22 +38,22 @@ contract('test Test', async([alice, bob, admin, dev, minter]) => {
 
         console.log(tradeData);
 
-        // await ethContract.methods.approve(this.swapRouterContract.address, '63376811096236907').send({from: admin});
-        // await web3.eth.sendTransaction({
-        //     from: admin,
-        //     to: this.swapRouterContract.address,
-        //     data: tradeData,
-        //     gas: 6000000, 
-        //     gasPrice: 4000000000
-        // })
+        await ethContract.methods.approve(this.swapRouterContract.address, '63376811096236907').send({from: admin});
         await web3.eth.sendTransaction({
             from: admin,
             to: this.swapRouterContract.address,
             data: tradeData,
-            value: 5000000000000000000,
             gas: 6000000, 
             gasPrice: 4000000000
         })
+        // await web3.eth.sendTransaction({
+        //     from: admin,
+        //     to: this.swapRouterContract.address,
+        //     data: tradeData,
+        //     value: 5000000000000000000,
+        //     gas: 6000000, 
+        //     gasPrice: 4000000000
+        // })
 
         // let balance = await busdContract.methods.balanceOf(admin).call();
         // console.log('balance : ', balance);
@@ -65,14 +66,19 @@ contract('test Test', async([alice, bob, admin, dev, minter]) => {
 
         // console.log('balance : ', await web3.eth.getBalance(admin))
 
-        console.log('balance : ', await web3.eth.getBalance(admin))
+        // console.log('balance : ', await web3.eth.getBalance(admin))
 
-        console.log('balance : ', await web3.eth.getBalance(this.swapRouterContract.address))
+        // console.log('balance : ', await web3.eth.getBalance(this.swapRouterContract.address))
 
-        console.log('balance : ', await web3.eth.getBalance('0x5b3770699868c6A57cFA0B1d76e5b8d26f0e20DA'))
+        // console.log('balance : ', await web3.eth.getBalance('0x5b3770699868c6A57cFA0B1d76e5b8d26f0e20DA'))
 
-        balance = await busdContract.methods.balanceOf(admin).call();
-        console.log('balance : ', balance);
+        // balance = await busdContract.methods.balanceOf(admin).call();
+        // console.log('balance : ', balance);
 
+        const eventResult = await this.swapRouterContract.getPastEvents('Swap', {
+            fromBlock:'latest',
+            toBlock:'latest'
+        });
+        console.log(JSON.stringify(eventResult[0]['args']))
     })
 })

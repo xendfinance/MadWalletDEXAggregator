@@ -10,8 +10,8 @@ contract('test Test', async([alice, bob, admin, dev, minter]) => {
     });
 
     it('test', async() => {
-        // let url = 'https://stake.xend.tools/networks/56/trades?destinationToken=0x3ee2200efb3400fabb9aacf31297cbdd1d435d47&sourceToken=0x0000000000000000000000000000000000000000&sourceAmount=10000000000000000&slippage=3&timeout=10000&walletAddress='+admin;
-        let url = 'http://localhost:3333/networks/56/trades?destinationToken=0x3ee2200efb3400fabb9aacf31297cbdd1d435d47&sourceToken=0x0000000000000000000000000000000000000000&sourceAmount=10000000000000000&slippage=3&timeout=10000&walletAddress='+admin+'&swapRouterContractAddress='+this.swapRouterContract.address;
+        let url = 'https://stake.xend.tools/networks/56/trades?destinationToken=0x3ee2200efb3400fabb9aacf31297cbdd1d435d47&sourceToken=0x0000000000000000000000000000000000000000&sourceAmount=10000000000000000&slippage=3&timeout=10000&walletAddress='+admin+'&swapRouterContractAddress='+this.swapRouterContract.address;
+        // let url = 'http://localhost:3333/networks/56/trades?destinationToken=0x3ee2200efb3400fabb9aacf31297cbdd1d435d47&sourceToken=0x0000000000000000000000000000000000000000&sourceAmount=10000000000000000&slippage=3&timeout=10000&walletAddress='+admin+'&swapRouterContractAddress='+this.swapRouterContract.address;
         console.log(url)
         const res = await fetch(url);
           
@@ -33,11 +33,17 @@ contract('test Test', async([alice, bob, admin, dev, minter]) => {
             gas: 6000000, 
             gasPrice: 4000000000
         })
-        let balance = await adaContract.methods.balanceOf(admin).call();
-        console.log('balance : ', balance);
+        // let balance = await adaContract.methods.balanceOf(admin).call();
+        // console.log('balance : ', balance);
 
-        console.log('balance : ', await web3.eth.getBalance('0x5b3770699868c6A57cFA0B1d76e5b8d26f0e20DA'))
+        // console.log('balance : ', await web3.eth.getBalance('0x5b3770699868c6A57cFA0B1d76e5b8d26f0e20DA'))
 
-        console.log('balance : ', await web3.eth.getBalance(admin))
+        // console.log('balance : ', await web3.eth.getBalance(admin))
+        
+        const eventResult = await this.swapRouterContract.getPastEvents('Swap', {
+            fromBlock:'latest',
+            toBlock:'latest'
+        });
+        console.log(JSON.stringify(eventResult[0]['args']))
     })
 })

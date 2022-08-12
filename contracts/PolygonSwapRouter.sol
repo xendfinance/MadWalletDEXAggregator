@@ -26,9 +26,11 @@ contract PolygonSwapRouter is OwnableUpgradeable, ReentrancyGuardUpgradeable {
     address public oneInchRouter;
     address public feeAddress;
 
+    event Swap(string indexed aggregatorId, address indexed caller, address indexed sourceToken, uint256 sourceTokenAmount, address destinationToken, uint256 destinationTokenAmount, address feeAddress, uint256 feeAmount);
+    
     function initialize() public initializer{
         paraswapRouter = address(0xDEF171Fe48CF0115B1d80b88dc8eAB59176FEe57);
-        airswapWrapper = address(0x9C0f658331B9f87d7FA54EF0216689492a0176C5);
+        airswapWrapper = address(0xee194bc274c2036B7e4F22e5BB7ef352e7ec9B74);
         zeroExRouter = address(0xDef1C0ded9bec7F1a1670819833240f027b25EfF);
         oneInchRouter = address(0x1111111254fb6c44bAC0beD2854e76F90643097d);
         feeAddress = address(0x5b3770699868c6A57cFA0B1d76e5b8d26f0e20DA);
@@ -54,94 +56,59 @@ contract PolygonSwapRouter is OwnableUpgradeable, ReentrancyGuardUpgradeable {
         uint256 swappingTokenAmount;
         bool success;
         bytes memory result;
+        bytes memory swapData;
+        address swapRouterAddress;
 
         assembly {
             destinationToken := mload(add(data, 0x40))
             swappingTokenAmount := mload(add(data, 0x60))
             receivedAmount := mload(add(data, 0x80))
             feeAmount := mload(add(data, 0xA0))
-        }
-
-        if(tokenFrom != address(0)){
-            IERC20Upgradeable(tokenFrom).safeTransferFrom(_msgSender(), address(this), amount);
+            swapData := mload(add(data, 0x0))
+            let cc := add(data, 0xE0)
+            swapData := add(cc, 0x0)
         }
 
         if(keccak256(abi.encodePacked((aggregatorId))) == keccak256(abi.encodePacked(("0xFeeDynamic")))){
+            swapRouterAddress = zeroExRouter;
             if(tokenFrom != address(0)){
                 if(IERC20Upgradeable(tokenFrom).allowance(address(this), zeroExRouter) == 0){
                     IERC20Upgradeable(tokenFrom).approve(zeroExRouter, type(uint256).max);
                 }
             }
-            bytes memory exSwapData;
-            assembly {
-                exSwapData := mload(add(data, 0x0))
-                let cc := add(data, 0xE0)
-                exSwapData := add(cc, 0x0)
-            }
-            if(tokenFrom != address(0)){
-                (success, result) = zeroExRouter.call(exSwapData);
-            }
-            else{
-                (success, result) = zeroExRouter.call{value:swappingTokenAmount}(exSwapData);
-            }
         }
         else if (keccak256(abi.encodePacked((aggregatorId))) == keccak256(abi.encodePacked(("oneInchV4FeeDynamic")))){
+            swapRouterAddress = oneInchRouter;
             if(tokenFrom != address(0)){
                 if(IERC20Upgradeable(tokenFrom).allowance(address(this), oneInchRouter) == 0){
                     IERC20Upgradeable(tokenFrom).approve(oneInchRouter, type(uint256).max);
                 }
             }
-            bytes memory oneInchData;
-            assembly {
-                oneInchData := mload(add(data, 0x0))
-                let cc := add(data, 0xE0)
-                oneInchData := add(cc, 0x0)
-            }
-            if(tokenFrom != address(0)){
-                (success, result) = oneInchRouter.call(oneInchData);
-            }
-            else{
-                (success, result) = oneInchRouter.call{value:swappingTokenAmount}(oneInchData);
-            }
         }
         else if (keccak256(abi.encodePacked((aggregatorId))) == keccak256(abi.encodePacked(("airswapV3FeeDynamic")))){
+            swapRouterAddress = airswapWrapper;
             if(tokenFrom != address(0)){
                 if(IERC20Upgradeable(tokenFrom).allowance(address(this), airswapWrapper) == 0){
                     IERC20Upgradeable(tokenFrom).approve(airswapWrapper, type(uint256).max);
                 }
             }
-            bytes memory airswapData;
-            assembly {
-                airswapData := mload(add(data, 0x0))
-                let cc := add(data, 0xE0)
-                airswapData := add(cc, 0x0)
-            }
-            if(tokenFrom != address(0)){
-                (success, result) = airswapWrapper.call(airswapData);
-            }
-            else{
-                (success, result) = airswapWrapper.call{value:swappingTokenAmount}(airswapData);
-            }
         }
         else if (keccak256(abi.encodePacked((aggregatorId))) == keccak256(abi.encodePacked(("paraswapV5FeeDynamic")))){
+            swapRouterAddress = paraswapRouter;
             if(tokenFrom != address(0)){
                 address proxy = IParaswapRouter(paraswapRouter).getTokenTransferProxy();
                 if(IERC20Upgradeable(tokenFrom).allowance(address(this), proxy) == 0){
                     IERC20Upgradeable(tokenFrom).approve(proxy, type(uint256).max);
                 }
             }
-            bytes memory paraswapData;
-            assembly {
-                paraswapData := mload(add(data, 0x0))
-                let cc := add(data, 0xE0)
-                paraswapData := add(cc, 0x0)
-            }
-            if(tokenFrom != address(0)){
-                (success, result) = paraswapRouter.call(paraswapData);
-            }
-            else{
-                (success, result) = paraswapRouter.call{value:swappingTokenAmount}(paraswapData);
-            }
+        }
+
+        if(tokenFrom != address(0)){
+            IERC20Upgradeable(tokenFrom).safeTransferFrom(_msgSender(), address(this), amount);
+            (success, result) = swapRouterAddress.call(swapData);
+        }
+        else{
+            (success, result) = swapRouterAddress.call{value:swappingTokenAmount}(swapData);
         }
 
         require(success, "Failed to swap");
@@ -168,6 +135,8 @@ contract PolygonSwapRouter is OwnableUpgradeable, ReentrancyGuardUpgradeable {
             (success,result) = payable(_msgSender()).call{value: receivedAmount}("");
             require(success, "Failed to send MATIC");
         }
+
+        emit Swap(aggregatorId, _msgSender(), tokenFrom, amount, destinationToken, receivedAmount, feeAddress, feeAmount);
     }
 
     /**

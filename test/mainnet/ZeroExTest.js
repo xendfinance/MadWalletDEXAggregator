@@ -48,17 +48,22 @@ contract('test Test', async([alice, bob, admin, dev, minter]) => {
             gasPrice: 4000000000
         })
 
-        let balance = await usdtContract.methods.balanceOf(admin).call();
-        console.log('admin token balance : ', balance);
+        // let balance = await usdtContract.methods.balanceOf(admin).call();
+        // console.log('admin token balance : ', balance);
 
-        balance = await usdtContract.methods.balanceOf(this.swapRouterContract.address).call();
-        console.log('swapContract token balance : ', balance);
+        // balance = await usdtContract.methods.balanceOf(this.swapRouterContract.address).call();
+        // console.log('swapContract token balance : ', balance);
 
-        balance = await usdcContract.methods.balanceOf('0x5b3770699868c6A57cFA0B1d76e5b8d26f0e20DA').call();
-        console.log('feeAddress token balance : ', balance);
+        // balance = await usdcContract.methods.balanceOf('0x5b3770699868c6A57cFA0B1d76e5b8d26f0e20DA').call();
+        // console.log('feeAddress token balance : ', balance);
 
-        console.log('admin eth balance : ', await web3.eth.getBalance(admin))
-        console.log('swapContract eth balance : ', await web3.eth.getBalance(this.swapRouterContract.address))
-        console.log('feeAddress eth balance : ', await web3.eth.getBalance('0x5b3770699868c6A57cFA0B1d76e5b8d26f0e20DA'))
+        // console.log('admin eth balance : ', await web3.eth.getBalance(admin))
+        // console.log('swapContract eth balance : ', await web3.eth.getBalance(this.swapRouterContract.address))
+        // console.log('feeAddress eth balance : ', await web3.eth.getBalance('0x5b3770699868c6A57cFA0B1d76e5b8d26f0e20DA'))
+        const eventResult = await this.swapRouterContract.getPastEvents('Swap', {
+            fromBlock:'latest',
+            toBlock:'latest'
+        });
+        console.log(JSON.stringify(eventResult[0]['args']))
     })
 })

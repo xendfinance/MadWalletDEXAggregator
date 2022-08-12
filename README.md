@@ -45,4 +45,6 @@ ganache-cli -f https://bsc.getblock.io/mainnet/?api_key=API_KEY -m "hidden moral
 https://github.com/xendfinance/MadWalletDEXAggregator/tree/main/test/ZeroExTest.js
 
 ## Deployed Contracts
-https://bscscan.com/address/0x32Dc22c7357F00E18Aa700674527A2a9BbBC77d9
+https://bscscan.com/address/0xe41f0FF3f4d90Bb1c4e32714532e064F9eA95F19
+https://polygonscan.com/address/0x2F34767898CbCb2cd24F86AC4E61C785D49B2df7
+https://etherscan.io/address/0x2B1eAD015dbab6618760ACee5e72148b95B95980
