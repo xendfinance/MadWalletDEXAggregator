@@ -17,7 +17,9 @@ contract('test Test', async([alice, bob, admin, dev, minter]) => {
 
     it('test', async() => {
         // let url = 'http://localhost:3333/networks/1/trades?destinationToken=0xdac17f958d2ee523a2206206994597c13d831ec7&sourceToken=0x0000000000000000000000000000000000000000&sourceAmount=10000000000000000&slippage=3&timeout=10000&walletAddress='+admin+'&swapRouterContractAddress='+this.swapRouterContract.address;
-        let url = 'http://localhost:3333/networks/1/trades?destinationToken=0xdac17f958d2ee523a2206206994597c13d831ec7&sourceToken=0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48&sourceAmount=5000000&slippage=3&timeout=10000&walletAddress='+admin+'&swapRouterContractAddress='+this.swapRouterContract.address;
+        // let url = 'http://localhost:3333/networks/1/trades?destinationToken=0xdac17f958d2ee523a2206206994597c13d831ec7&sourceToken=0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48&sourceAmount=5000000&slippage=3&timeout=10000&walletAddress='+admin+'&swapRouterContractAddress='+this.swapRouterContract.address;
+        // let url = 'https://stake.xend.tools/networks/1/trades?destinationToken=0xdac17f958d2ee523a2206206994597c13d831ec7&sourceToken=0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48&sourceAmount=5000000&slippage=3&timeout=10000&walletAddress='+admin+'&swapRouterContractAddress='+this.swapRouterContract.address;
+        let url = 'https://stake.xend.tools/networks/1/trades?destinationToken=0xdac17f958d2ee523a2206206994597c13d831ec7&sourceToken=0x0000000000000000000000000000000000000000&sourceAmount=10000000000000000&slippage=3&timeout=10000&walletAddress='+admin+'&swapRouterContractAddress='+this.swapRouterContract.address;
         console.log(url)
         const res = await fetch(url);
           
@@ -31,22 +33,22 @@ contract('test Test', async([alice, bob, admin, dev, minter]) => {
 
         console.log(tradeData);
 
-        // await web3.eth.sendTransaction({
-        //     from: admin,
-        //     to: this.swapRouterContract.address,
-        //     data: tradeData,
-        //     value: '10000000000000000',
-        //     gas: 6000000, 
-        //     gasPrice: 4000000000
-        // })
-        await usdcContract.methods.approve(this.swapRouterContract.address, '5000000').send({from: admin});
         await web3.eth.sendTransaction({
             from: admin,
             to: this.swapRouterContract.address,
             data: tradeData,
+            value: '10000000000000000',
             gas: 6000000, 
             gasPrice: 4000000000
         })
+        // await usdcContract.methods.approve(this.swapRouterContract.address, '5000000').send({from: admin});
+        // await web3.eth.sendTransaction({
+        //     from: admin,
+        //     to: this.swapRouterContract.address,
+        //     data: tradeData,
+        //     gas: 6000000, 
+        //     gasPrice: 4000000000
+        // })
 
         // let balance = await usdtContract.methods.balanceOf(admin).call();
         // console.log('admin token balance : ', balance);

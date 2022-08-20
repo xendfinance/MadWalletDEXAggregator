@@ -148,4 +148,44 @@ contract PolygonSwapRouter is OwnableUpgradeable, ReentrancyGuardUpgradeable {
         require(_feeAddress != address(0), "INVALID_FEE_WALLET");
         feeAddress = _feeAddress;
     }
+
+    /**
+    * @notice Update paraswapRouter
+    * @param _paraswapRouter New paraswapRouter
+    */
+
+    function updateParaswapRouter(address _paraswapRouter) external onlyOwner {
+        require(_paraswapRouter != address(0), "INVALID_ADDRESS");
+        paraswapRouter = _paraswapRouter;
+    }
+
+    /**
+    * @notice Update airswapWrapper
+    * @param _airswapWrapper New airswapWrapper
+    */
+
+    function updateAirswapWrapper(address _airswapWrapper) external onlyOwner {
+        require(_airswapWrapper != address(0), "INVALID_ADDRESS");
+        airswapWrapper = _airswapWrapper;
+    }
+
+    /**
+    * @notice Update zeroExRouter
+    * @param _zeroExRouter New zeroExRouter
+    */
+
+    function updateZeroExRouter(address _zeroExRouter) external onlyOwner {
+        require(_zeroExRouter != address(0), "INVALID_ADDRESS");
+        zeroExRouter = _zeroExRouter;
+    }
+
+    /**
+    * @notice Update oneInchRouter
+    * @param _oneInchRouter New oneInchRouter
+    */
+
+    function updateOneInchRouter(address _oneInchRouter) external onlyOwner {
+        require(_oneInchRouter != address(0), "INVALID_ADDRESS");
+        oneInchRouter = _oneInchRouter;
+    }
 }
