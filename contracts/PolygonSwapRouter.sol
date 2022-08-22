@@ -26,7 +26,7 @@ contract PolygonSwapRouter is OwnableUpgradeable, ReentrancyGuardUpgradeable {
     address public oneInchRouter;
     address public feeAddress;
 
-    event Swap(string indexed aggregatorId, address indexed caller, address indexed sourceToken, uint256 sourceTokenAmount, address destinationToken, uint256 destinationTokenAmount, address feeAddress, uint256 feeAmount);
+    event Swap(string aggregatorId, address indexed caller, address indexed sourceToken, uint256 sourceTokenAmount, address indexed destinationToken, uint256 destinationTokenAmount, address feeAddress, uint256 feeAmount);
     
     function initialize() public initializer{
         paraswapRouter = address(0xDEF171Fe48CF0115B1d80b88dc8eAB59176FEe57);
