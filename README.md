@@ -7,7 +7,7 @@ DEX Aggregator
 ### 1. Provided Swap Data
 Gets Swap Data from Madwallet Swap Backend - https://stake.xend.tools/networks/56/trades?destinationToken=&sourceToken=&sourceAmount=&slippage=&timeout=&walletAddress=
 
-Madwallet Swap Backend provides datas for swapping from 5 lending platforms.
+Madwallet Swap Backend provides datas for swapping from 4 swap protocols.
 
 Here are swap routers on lending platforms.
 * AirSwapV3 - 0x132F13C3896eAB218762B9e46F55C9c478905849
