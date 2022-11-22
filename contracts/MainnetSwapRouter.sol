@@ -72,31 +72,31 @@ contract MainnetSwapRouter is OwnableUpgradeable, ReentrancyGuardUpgradeable {
         if(keccak256(abi.encodePacked((aggregatorId))) == keccak256(abi.encodePacked(("0xFeeDynamic")))){
             swapRouterAddress = zeroExRouter;
             if(tokenFrom != address(0)){
-                if(IERC20Upgradeable(tokenFrom).allowance(address(this), zeroExRouter) == 0){
-                    IERC20Upgradeable(tokenFrom).approve(zeroExRouter, type(uint256).max);
+                if(IERC20Upgradeable(tokenFrom).allowance(address(this), swapRouterAddress) == 0){
+                    IERC20Upgradeable(tokenFrom).approve(swapRouterAddress, type(uint256).max);
                 }
             }
         }
         else if (keccak256(abi.encodePacked((aggregatorId))) == keccak256(abi.encodePacked(("oneInchV4FeeDynamic")))){
             swapRouterAddress = oneInchRouter;
             if(tokenFrom != address(0)){
-                if(IERC20Upgradeable(tokenFrom).allowance(address(this), oneInchRouter) == 0){
-                    IERC20Upgradeable(tokenFrom).approve(oneInchRouter, type(uint256).max);
+                if(IERC20Upgradeable(tokenFrom).allowance(address(this), swapRouterAddress) == 0){
+                    IERC20Upgradeable(tokenFrom).approve(swapRouterAddress, type(uint256).max);
                 }
             }
         }
         else if (keccak256(abi.encodePacked((aggregatorId))) == keccak256(abi.encodePacked(("airswapV3FeeDynamic")))){
             swapRouterAddress = airswapWrapper;
             if(tokenFrom != address(0)){
-                if(IERC20Upgradeable(tokenFrom).allowance(address(this), airswapWrapper) == 0){
-                    IERC20Upgradeable(tokenFrom).approve(airswapWrapper, type(uint256).max);
+                if(IERC20Upgradeable(tokenFrom).allowance(address(this), swapRouterAddress) == 0){
+                    IERC20Upgradeable(tokenFrom).approve(swapRouterAddress, type(uint256).max);
                 }
             }
         }
         else if (keccak256(abi.encodePacked((aggregatorId))) == keccak256(abi.encodePacked(("paraswapV5FeeDynamic")))){
             swapRouterAddress = paraswapRouter;
             if(tokenFrom != address(0)){
-                address proxy = IParaswapRouter(paraswapRouter).getTokenTransferProxy();
+                address proxy = IParaswapRouter(swapRouterAddress).getTokenTransferProxy();
                 if(IERC20Upgradeable(tokenFrom).allowance(address(this), proxy) == 0){
                     IERC20Upgradeable(tokenFrom).approve(proxy, type(uint256).max);
                 }
