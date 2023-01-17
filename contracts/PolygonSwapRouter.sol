@@ -73,7 +73,7 @@ contract PolygonSwapRouter is OwnableUpgradeable, ReentrancyGuardUpgradeable {
             swapRouterAddress = zeroExRouter;
             if(tokenFrom != address(0)){
                 if(IERC20Upgradeable(tokenFrom).allowance(address(this), swapRouterAddress) == 0){
-                    IERC20Upgradeable(tokenFrom).approve(swapRouterAddress, type(uint256).max);
+                    IERC20Upgradeable(tokenFrom).safeApprove(swapRouterAddress, type(uint256).max);
                 }
             }
         }
@@ -81,7 +81,7 @@ contract PolygonSwapRouter is OwnableUpgradeable, ReentrancyGuardUpgradeable {
             swapRouterAddress = oneInchRouter;
             if(tokenFrom != address(0)){
                 if(IERC20Upgradeable(tokenFrom).allowance(address(this), swapRouterAddress) == 0){
-                    IERC20Upgradeable(tokenFrom).approve(swapRouterAddress, type(uint256).max);
+                    IERC20Upgradeable(tokenFrom).safeApprove(swapRouterAddress, type(uint256).max);
                 }
             }
         }
@@ -89,7 +89,7 @@ contract PolygonSwapRouter is OwnableUpgradeable, ReentrancyGuardUpgradeable {
             swapRouterAddress = airswapWrapper;
             if(tokenFrom != address(0)){
                 if(IERC20Upgradeable(tokenFrom).allowance(address(this), swapRouterAddress) == 0){
-                    IERC20Upgradeable(tokenFrom).approve(swapRouterAddress, type(uint256).max);
+                    IERC20Upgradeable(tokenFrom).safeApprove(swapRouterAddress, type(uint256).max);
                 }
             }
         }
@@ -98,7 +98,7 @@ contract PolygonSwapRouter is OwnableUpgradeable, ReentrancyGuardUpgradeable {
             if(tokenFrom != address(0)){
                 address proxy = IParaswapRouter(swapRouterAddress).getTokenTransferProxy();
                 if(IERC20Upgradeable(tokenFrom).allowance(address(this), proxy) == 0){
-                    IERC20Upgradeable(tokenFrom).approve(proxy, type(uint256).max);
+                    IERC20Upgradeable(tokenFrom).safeApprove(proxy, type(uint256).max);
                 }
             }
         }
