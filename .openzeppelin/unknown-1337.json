@@ -1,8 +1,8 @@
 {
   "manifestVersion": "3.2",
   "admin": {
-    "address": "0xE77C501cf0aA127446D5be722A987Dbc1C517aa3",
-    "txHash": "0x8556bdb780c2e8d2a1b4949e34dcf1918846e90ea05f1aedd669f061466c676f"
+    "address": "0xBDEA3f7E3DE80f01Bc5ACCd321595Edf1ed4C66d",
+    "txHash": "0x723bb1e343c727604242922b755dc5eb2ada8914ab67e69bef365c129df3df3f"
   },
   "proxies": [
     {
@@ -18,6 +18,21 @@
     {
       "address": "0x9F4b7F38182c6288E8b358CC9918CE2004Bb894c",
       "txHash": "0x4ba3dcd303be22000627feefd9b0cd10dda6bd2bdd7407de97d32154deeb6ebf",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xB69Be8184A070562683B5D72e65a7979fd9743f8",
+      "txHash": "0x99d5ef9f0a5c7574204eb0c0f9efc91b42721948b5c396e4a042ba0f34f92121",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x44f7c71C105e8Cc84503cc8d843264fD553E8A9A",
+      "txHash": "0xa2295b8fce20ac9819ff343324f4059736af0a6c47385a867959a77dc31eab39",
+      "kind": "transparent"
+    },
+    {
+      "address": "0x14A965da9205D9C744DeC61d62759AcEa0ce9eb0",
+      "txHash": "0x27d6ad49dd06ce7a0264336522330e9c7c1639af5f23b66b1cdc2da4a2454e9a",
       "kind": "transparent"
     }
   ],
@@ -112,6 +127,312 @@
           },
           "t_array(t_uint256)50_storage": {
             "label": "uint256[50]"
+          },
+          "t_bool": {
+            "label": "bool"
+          }
+        }
+      }
+    },
+    "07f36ba208d358576db13e743f08126756bfb8932ad302df10b30f472d7fb58a": {
+      "address": "0x824f3bf6D09942D5463b1697911a5798c6A34673",
+      "txHash": "0xd0dd5313126c27b4c016971d99ce1f201c336d4f03be71122444186769b58e12",
+      "layout": {
+        "solcVersion": "0.8.9",
+        "storage": [
+          {
+            "contract": "Initializable",
+            "label": "_initialized",
+            "type": "t_uint8",
+            "src": "../@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:62",
+            "retypedFrom": "bool"
+          },
+          {
+            "contract": "Initializable",
+            "label": "_initializing",
+            "type": "t_bool",
+            "src": "../@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:67"
+          },
+          {
+            "contract": "ContextUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "../@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:36"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "_owner",
+            "type": "t_address",
+            "src": "../@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:22"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "../@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:94"
+          },
+          {
+            "contract": "ReentrancyGuardUpgradeable",
+            "label": "_status",
+            "type": "t_uint256",
+            "src": "../@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:38"
+          },
+          {
+            "contract": "ReentrancyGuardUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "../@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:80"
+          },
+          {
+            "contract": "SwapRouter",
+            "label": "paraswapRouter",
+            "type": "t_address",
+            "src": "../project:/contracts/SwapRouter.sol:23"
+          },
+          {
+            "contract": "SwapRouter",
+            "label": "airswapWrapper",
+            "type": "t_address",
+            "src": "../project:/contracts/SwapRouter.sol:24"
+          },
+          {
+            "contract": "SwapRouter",
+            "label": "zeroExRouter",
+            "type": "t_address",
+            "src": "../project:/contracts/SwapRouter.sol:25"
+          },
+          {
+            "contract": "SwapRouter",
+            "label": "oneInchRouter",
+            "type": "t_address",
+            "src": "../project:/contracts/SwapRouter.sol:26"
+          },
+          {
+            "contract": "SwapRouter",
+            "label": "feeAddress",
+            "type": "t_address",
+            "src": "../project:/contracts/SwapRouter.sol:27"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address"
+          },
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          },
+          "t_uint8": {
+            "label": "uint8"
+          },
+          "t_bool": {
+            "label": "bool"
+          }
+        }
+      }
+    },
+    "80e5cdb76a399ae91b9ecca8246a05056ae3a4d25d28e1d66a69fdda7b8f2c1f": {
+      "address": "0xd29179E2be767D57B3792E4E794BEed66E751b83",
+      "txHash": "0x7d27a41488faf8ca144b7730482145bd049a894fe19c77695c1f1eaf19daf6e0",
+      "layout": {
+        "solcVersion": "0.8.9",
+        "storage": [
+          {
+            "contract": "Initializable",
+            "label": "_initialized",
+            "type": "t_uint8",
+            "src": "../@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:62",
+            "retypedFrom": "bool"
+          },
+          {
+            "contract": "Initializable",
+            "label": "_initializing",
+            "type": "t_bool",
+            "src": "../@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:67"
+          },
+          {
+            "contract": "ContextUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "../@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:36"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "_owner",
+            "type": "t_address",
+            "src": "../@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:22"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "../@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:94"
+          },
+          {
+            "contract": "ReentrancyGuardUpgradeable",
+            "label": "_status",
+            "type": "t_uint256",
+            "src": "../@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:38"
+          },
+          {
+            "contract": "ReentrancyGuardUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "../@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:80"
+          },
+          {
+            "contract": "MainnetSwapRouter",
+            "label": "paraswapRouter",
+            "type": "t_address",
+            "src": "../project:/contracts/MainnetSwapRouter.sol:23"
+          },
+          {
+            "contract": "MainnetSwapRouter",
+            "label": "airswapWrapper",
+            "type": "t_address",
+            "src": "../project:/contracts/MainnetSwapRouter.sol:24"
+          },
+          {
+            "contract": "MainnetSwapRouter",
+            "label": "zeroExRouter",
+            "type": "t_address",
+            "src": "../project:/contracts/MainnetSwapRouter.sol:25"
+          },
+          {
+            "contract": "MainnetSwapRouter",
+            "label": "oneInchRouter",
+            "type": "t_address",
+            "src": "../project:/contracts/MainnetSwapRouter.sol:26"
+          },
+          {
+            "contract": "MainnetSwapRouter",
+            "label": "feeAddress",
+            "type": "t_address",
+            "src": "../project:/contracts/MainnetSwapRouter.sol:27"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address"
+          },
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          },
+          "t_uint8": {
+            "label": "uint8"
+          },
+          "t_bool": {
+            "label": "bool"
+          }
+        }
+      }
+    },
+    "e0958b9e3267ab6e99f6d25c8d87863552e32ddb0977259e4fed6f639262080a": {
+      "address": "0xbD25d3E1C3172Cf9121aEd86C68c6694C4281a56",
+      "txHash": "0x160fb7ec36dd7aac515ec4765fe82e4916702d019fb3335ce4fb636a4fe0e64b",
+      "layout": {
+        "solcVersion": "0.8.9",
+        "storage": [
+          {
+            "contract": "Initializable",
+            "label": "_initialized",
+            "type": "t_uint8",
+            "src": "../@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:62",
+            "retypedFrom": "bool"
+          },
+          {
+            "contract": "Initializable",
+            "label": "_initializing",
+            "type": "t_bool",
+            "src": "../@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:67"
+          },
+          {
+            "contract": "ContextUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)50_storage",
+            "src": "../@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol:36"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "_owner",
+            "type": "t_address",
+            "src": "../@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:22"
+          },
+          {
+            "contract": "OwnableUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "../@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:94"
+          },
+          {
+            "contract": "ReentrancyGuardUpgradeable",
+            "label": "_status",
+            "type": "t_uint256",
+            "src": "../@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:38"
+          },
+          {
+            "contract": "ReentrancyGuardUpgradeable",
+            "label": "__gap",
+            "type": "t_array(t_uint256)49_storage",
+            "src": "../@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol:80"
+          },
+          {
+            "contract": "PolygonSwapRouter",
+            "label": "paraswapRouter",
+            "type": "t_address",
+            "src": "../project:/contracts/PolygonSwapRouter.sol:23"
+          },
+          {
+            "contract": "PolygonSwapRouter",
+            "label": "airswapWrapper",
+            "type": "t_address",
+            "src": "../project:/contracts/PolygonSwapRouter.sol:24"
+          },
+          {
+            "contract": "PolygonSwapRouter",
+            "label": "zeroExRouter",
+            "type": "t_address",
+            "src": "../project:/contracts/PolygonSwapRouter.sol:25"
+          },
+          {
+            "contract": "PolygonSwapRouter",
+            "label": "oneInchRouter",
+            "type": "t_address",
+            "src": "../project:/contracts/PolygonSwapRouter.sol:26"
+          },
+          {
+            "contract": "PolygonSwapRouter",
+            "label": "feeAddress",
+            "type": "t_address",
+            "src": "../project:/contracts/PolygonSwapRouter.sol:27"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address"
+          },
+          "t_uint256": {
+            "label": "uint256"
+          },
+          "t_array(t_uint256)49_storage": {
+            "label": "uint256[49]"
+          },
+          "t_array(t_uint256)50_storage": {
+            "label": "uint256[50]"
+          },
+          "t_uint8": {
+            "label": "uint8"
           },
           "t_bool": {
             "label": "bool"

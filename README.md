@@ -61,12 +61,12 @@ ganache-cli -f https://bsc.getblock.io/mainnet/?api_key=API_KEY -m "hidden moral
 https://github.com/xendfinance/MadWalletDEXAggregator/tree/main/test/ZeroExTest.js
 
 
-## DEPLOYED CONTRACTS FOR THE DEX-AGGREGATOR
+## DEPLOYED CONTRACTS FOR THE MADWALLET SWAP ROUTERS
 * ETHEREUM: [0x2B1eAD015dbab6618760ACee5e72148b95B95980](https://etherscan.io/address/0x2B1eAD015dbab6618760ACee5e72148b95B95980#code)<br>
 * BSC: [0xe41f0FF3f4d90Bb1c4e32714532e064F9eA95F19](https://bscscan.com/address/0xe41f0FF3f4d90Bb1c4e32714532e064F9eA95F19#code)<br>
 * POLYGON: [0x2F34767898CbCb2cd24F86AC4E61C785D49B2df7](https://polygonscan.com/address/0x2F34767898CbCb2cd24F86AC4E61C785D49B2df7#code)
 
-## DEPLOYED CONTRACTS FOR THE SWAP ROUTERS
+## DEPLOYED CONTRACTS FOR THE SUPPORTED DEXES
 Here are the swap routers on BSC.
 * AirSwapV3 - 0x132F13C3896eAB218762B9e46F55C9c478905849
 * 1inchSwap - 0x1111111254fb6c44bAC0beD2854e76F90643097ds
