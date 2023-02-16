@@ -7,6 +7,8 @@ It works with 4 swap aggregators, and selects the best among them. These include
 
 ## HOW TO SWAP
 
+*you can clone our test demo implementation here: https://github.com/okorieebube/mw-swap-demo*
+
 Users can perform a simple swap on this Dex Aggregator using the steps below.
 They only need to interact with the off-chain aggregator which returns the DEX with the current lowest fee, amongst other details.
 
